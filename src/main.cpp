@@ -6,11 +6,11 @@
 
 int main()
 {
-    tsr::App& app = tsr::App::getInstance();
+    tsr::App& rApp = tsr::App::getInstance();
 
     try
     {
-        app.run();
+        rApp.run();
     }
     catch(const std::exception& e)
     {
