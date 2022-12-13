@@ -1,4 +1,4 @@
-#include "App.h"
+#include "application.h"
 #include <gtest/gtest.h>
 
 TEST(DummyTests, Dummytest)

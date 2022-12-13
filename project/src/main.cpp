@@ -1,16 +1,15 @@
-#include "App.h"
+#include "application.h"
 
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
 
-int main()
+int main(int argc, char* argv[])
 {
-    tsr::App& rApp = tsr::App::getInstance();
-
     try
     {
-        rApp.run();
+        tsr::Application application = tsr::Application(argc, argv);
+        application.run();
     }
     catch(const std::exception& e)
     {

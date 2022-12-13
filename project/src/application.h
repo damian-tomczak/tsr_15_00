@@ -5,17 +5,20 @@
 
 #include "Tools.h"
 
+class QGuiApplication;
+class QQmlApplicationEngine;
+
 namespace tsr
 {
-class App final
+class Application final
 {
-private:
-    App();
+    NOT_COPYABLE(Application);
+    QGuiApplication* app;
+    QQmlApplicationEngine* engine;
 
 public:
-    ~App() = default;
-    NOT_COPYABLE(App);
-    static App& getInstance();
+    Application(int argc, char* argv[]);
+    ~Application();
 
     void run();
 };
