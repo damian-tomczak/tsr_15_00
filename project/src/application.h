@@ -21,5 +21,6 @@ public:
     ~Application();
 
     void run();
+    void qmlRegister();
 };
 }
