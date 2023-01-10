@@ -8,8 +8,8 @@ import blackBoard 1.0
 Window {
     id:win
     visible: true
-    width: 640
-    height: 480
+    width: 1280
+    height: 720
     title: qsTr("Block-Based Programming Language")
 
     Cursor
@@ -95,7 +95,7 @@ Window {
             y: 34
             height: 93
             color: "#fdfdfd"
-            text: qsTr("Engine Initialized")
+            text: qsTr("Here you will see the result of work")
             font.italic: false
             font.bold: false
             anchors.bottom: parent.bottom
@@ -124,6 +124,7 @@ Window {
             id: board
             objectName: "board"
             anchors.fill: parent
+            onRightClickedChanged: if(board.rightClicked)contextMenu.popup()
             Result {
                 id:calc
             }
