@@ -1,6 +1,6 @@
 #include "blackboard.h"
 
-BlackBoard::BlackBoard() : isMouseDown{ false }, isRighClicked{ false }
+BlackBoard::BlackBoard()
 {
     setAcceptedMouseButtons(Qt::AllButtons);
 }

@@ -29,12 +29,12 @@ private:
     QColor largeLineColor{ 28, 28, 28 };
 
     QPoint mouseDownPosition;
-    bool isMouseDown;
+    bool isMouseDown{};
 
     int squareDimension{ 25 };
     int squareNumber{ 5 };
 
     void drawGridLines(QPainter* painter);
 
-    bool isRighClicked;
+    bool isRighClicked{};
 };

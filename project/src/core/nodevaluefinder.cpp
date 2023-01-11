@@ -2,13 +2,13 @@
 
 QString NodeValueFinder::getResult(BlackBoard* blackboard)
 {
-    QList<NodeCore*> allNodes;
-    QList<NodeCore*> inputNodeOnly;
+    QList<CoreNode*> allNodes;
+    QList<CoreNode*> inputNodeOnly;
 
     QObjectList children = blackboard->children();
     for (int i = 0; i < children.size(); i++)
     {
-        NodeCore* c = dynamic_cast<NodeCore*>(children[i]);
+        CoreNode* c = dynamic_cast<CoreNode*>(children[i]);
         if (c != nullptr)
         {
             allNodes.push_back(c);

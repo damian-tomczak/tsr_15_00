@@ -1,6 +1,6 @@
-#include "nodecore.h"
+#include "corenode.h"
 
-QString NodeCore::resultString()
+QString CoreNode::resultString()
 {
     QString result = functionName;
     for (int j = 0; j < outputPort.length(); j++)
@@ -27,7 +27,7 @@ QString NodeCore::resultString()
             continue;
         }
 
-        result += dynamic_cast<NodeCore*>(inputPort[i].target->parent)->resultString();
+        result += dynamic_cast<CoreNode*>(inputPort[i].target->parent)->resultString();
         if (i != inputPort.length() - 1)
         {
             result += ",";
@@ -42,7 +42,7 @@ QString NodeCore::resultString()
     return result;
 }
 
-void NodeCore::paint(QPainter*)
+void CoreNode::paint(QPainter*)
 {
 
 }

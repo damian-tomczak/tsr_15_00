@@ -2,10 +2,10 @@
 
 #include <QtQuick/QQuickPaintedItem>
 
-#include "numberboxcore.hpp"
-#include "port.h"
+#include "core/numberboxcore.hpp"
+#include "core/port.h"
 
-class NodeCore : public QQuickPaintedItem
+class CoreNode : public QQuickPaintedItem
 {
     Q_OBJECT
 

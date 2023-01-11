@@ -3,7 +3,7 @@
 #include <QObject>
 
 #include "blackboard.h"
-#include "nodecore.h"
+#include "nodes/corenode.h"
 #include "resultparser.h"
 
 class NodeValueFinder : public QObject
