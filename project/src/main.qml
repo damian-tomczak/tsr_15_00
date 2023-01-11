@@ -35,16 +35,15 @@ Window {
             text: "Result"
             anchors.right: parent.right
             anchors.rightMargin: 8
-            onClicked:
-            {
+            onClicked: {
                 var msg=calc.getResult(board)
-                if(msg.indexOf("ERR")>=0)
-                {
+                if(msg.indexOf("ERR")>=0) {
                     outputText.color="red"
                     msg=msg.replace("ERR","")
                 }
-                else
+                else {
                     outputText.color="white"
+                }
                 outputText.text=msg
             }
         }
@@ -124,7 +123,7 @@ Window {
             id: board
             objectName: "board"
             anchors.fill: parent
-            onRightClickedChanged: if(board.rightClicked)contextMenu.popup()
+            onRightClickedChanged: if(board.rightClicked) contextMenu.popup()
             Result {
                 id:calc
             }
