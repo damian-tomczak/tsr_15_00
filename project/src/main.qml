@@ -6,7 +6,7 @@ import noderesults 1.0
 import blackBoard 1.0
 
 Window {
-    id:win
+    id: win
     visible: true
     width: 1280
     height: 720
@@ -36,7 +36,7 @@ Window {
             anchors.right: parent.right
             anchors.rightMargin: 8
             onClicked: {
-                var msg=calc.getResult(board)
+                var msg = calc.getResult(board)
                 if(msg.indexOf("ERR")>=0) {
                     outputText.color="red"
                     msg=msg.replace("ERR","")
@@ -63,7 +63,6 @@ Window {
         anchors.bottomMargin: 0
 
         Rectangle {
-
             id: consoleHeaderPanel
             x: 0
             y: 0

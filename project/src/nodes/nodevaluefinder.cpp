@@ -28,5 +28,5 @@ QString NodeValueFinder::getResult(BlackBoard* blackboard)
 
     ResultParser p;
 
-    return p.OoderResult(res);
+    return p.orderResult(res);
 }

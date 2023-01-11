@@ -13,8 +13,9 @@ find_package(Qt5 REQUIRED COMPONENTS Core Quick)
 
 file(GLOB_RECURSE SRC_FILES *.cpp)
 file(GLOB_RECURSE H_FILES *.h)
+file(GLOB_RECURSE HPP_FILES *.hpp)
 list(REMOVE_ITEM ${SRC_FILES} main.cpp)
-add_library(${PROJECT_NAME} ${SRC_FILES} ${H_FILES} main.qml qtquickcontrols2.conf)
+add_library(${PROJECT_NAME} ${SRC_FILES} ${H_FILES} ${HPP_FILES} main.qml qtquickcontrols2.conf)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${QT_PATH}/include/QtGui)
 

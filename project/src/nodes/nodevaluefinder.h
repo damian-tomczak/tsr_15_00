@@ -9,6 +9,7 @@
 class NodeValueFinder : public QObject
 {
     Q_OBJECT
+public:
 
     Q_INVOKABLE QString getResult(BlackBoard*);
 };
