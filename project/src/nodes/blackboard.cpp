@@ -1,12 +1,13 @@
 #include "blackboard.h"
 
-BlackBoard::BlackBoard()
+BlackBoard::BlackBoard() : isMouseDown{ false }, isRighClicked{ false }
 {
+    setAcceptedMouseButtons(Qt::AllButtons);
 }
 
 bool BlackBoard::rightClicked() const
 {
-    return righClicked;
+    return isRighClicked;
 }
 
 void BlackBoard::paint(QPainter* painter)
@@ -58,4 +59,27 @@ void BlackBoard::drawGridLines(QPainter* painter)
         painter->drawLine(0, i * squareDimension,
             width, i * squareDimension);
     }
+}
+
+void BlackBoard::mousePressEvent(QMouseEvent* event)
+{
+    isMouseDown = true;
+    mouseDownPosition = event->pos();
+    setFocus(true);
+
+    if (event->button() == Qt::RightButton)
+    {
+        isRighClicked = true;
+        emit onRightMouseClickChanged(true);
+    }
+    else {
+        isRighClicked = false;
+        emit onRightMouseClickChanged(false);
+    }
+}
+
+void BlackBoard::mouseReleaseEvent(QMouseEvent*)
+{
+    isMouseDown = false;
+    mouseDownPosition = QPoint(0, 0);
 }

@@ -1,7 +1,7 @@
 #include "application.h"
 
-#include "QGuiApplication.h"
-#include "QQmlApplicationEngine.h"
+#include <QGuiApplication.h>
+#include <QQmlApplicationEngine.h>
 
 #include "nodes/cursor.h"
 #include "nodes/blackboard.h"

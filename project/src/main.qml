@@ -32,7 +32,7 @@ Window {
             y: -1
             width: 118
             height: 50
-            text: "Result"
+            text: "RUN"
             anchors.right: parent.right
             anchors.rightMargin: 8
             onClicked: {
@@ -122,7 +122,8 @@ Window {
             id: board
             objectName: "board"
             anchors.fill: parent
-            onRightClickedChanged: if(board.rightClicked) contextMenu.popup()
+            onRightClickedChanged: contextMenu.popup()
+
             Result {
                 id:calc
             }
