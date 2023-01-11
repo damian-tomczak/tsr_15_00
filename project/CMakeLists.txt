@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(tsr VERSION 0.0.1 LANGUAGES CXX)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 if(NOT MSVC AND NOT WIN32)
     message(WARNING "Config with MSVC and WIN32 was only tested!")
 endif()
