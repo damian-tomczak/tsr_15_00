@@ -7,13 +7,13 @@
 #include "core/blackboard.h"
 #include "core/nodevaluefinder.h"
 
-#include "nodes/addnode.h"
-#include "nodes/printnode.h"
-#include "nodes/dividenode.h"
-#include "nodes/modulonode.h"
-#include "nodes/multiplynode.h"
-#include "nodes/subtractnode.h"
-#include "nodes/var1dnode.h"
+#include "nodes/addnode.hpp"
+#include "nodes/printnode.hpp"
+#include "nodes/dividenode.hpp"
+#include "nodes/modulonode.hpp"
+#include "nodes/multiplynode.hpp"
+#include "nodes/subtractnode.hpp"
+#include "nodes/var1dnode.hpp"
 
 namespace tsr
 {
