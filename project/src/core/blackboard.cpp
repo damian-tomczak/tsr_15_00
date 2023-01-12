@@ -24,12 +24,12 @@ void BlackBoard::drawGridLines(QPainter* painter)
 
     painter->fillRect(0, 0, width, height, QBrush(backgroundColor));
 
-    int vertLines = width / squareDimension + 1;
-    int horizLines = height / squareDimension + 1;
+    int verticalLines = width / squareDimension + 1;
+    int horizontalLines = height / squareDimension + 1;
 
     painter->drawRect(0, 0, width, height);
 
-    for (int i = -squareDimension; i < vertLines; i++)
+    for (int i = -squareDimension; i < verticalLines; i++)
     {
         if (i % squareNumber == 0)
         {
@@ -45,7 +45,7 @@ void BlackBoard::drawGridLines(QPainter* painter)
             height);
     }
 
-    for (int i = -squareDimension; i < horizLines; i++)
+    for (int i = -squareDimension; i < horizontalLines; i++)
     {
         if (i % squareNumber == 0)
         {

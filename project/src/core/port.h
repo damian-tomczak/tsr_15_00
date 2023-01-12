@@ -8,18 +8,18 @@
 class Port
 {
 public:
-    Port();
-
-    enum PortType
+    enum class PortType
     {
-        Input,
-        OutPut
+        INPUT,
+        OUTPUT
     };
 
-    QQuickItem* parent;
-    Port* target;
-    PortType type = PortType::Input;
+    QQuickItem* mParent{};
+    Port* mTarget{};
+    PortType mType{ PortType::INPUT };
+    QColor mColor{ Qt::green };
+    QPoint mPosition;
 
-    QList<NumberBox> numberBoxList;
+    QList<NumberBox> mNumberBoxes;
 
 };

@@ -1,5 +1,5 @@
 #include "printnode.h"
 
-PrintNode::PrintNode()
+PrintNode::PrintNode() : CoreNode("print")
 {
 }

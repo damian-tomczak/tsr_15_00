@@ -1,5 +1,5 @@
 #include "modulonode.h"
 
-ModuloNode::ModuloNode()
+ModuloNode::ModuloNode() : CoreNode("modulo")
 {
 }

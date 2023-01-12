@@ -1,5 +1,5 @@
 #include "subtractnode.h"
 
-SubtractNode::SubtractNode()
+SubtractNode::SubtractNode() : CoreNode("subtract")
 {
 }

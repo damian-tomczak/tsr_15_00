@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtQuick/QQuickPaintedItem>
+#include <QQuickPaintedItem>
 #include <QPainter>
 
 class BlackBoard : public QQuickPaintedItem

@@ -11,13 +11,14 @@ endif()
 list(APPEND CMAKE_PREFIX_PATH ${QT_PATH})
 find_package(Qt5 REQUIRED COMPONENTS Core Quick)
 
-file(GLOB_RECURSE SRC_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
-file(GLOB_RECURSE H_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.h)
-file(GLOB_RECURSE HPP_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.hpp)
+file(GLOB_RECURSE SRC_FILES *.cpp)
+file(GLOB_RECURSE H_FILES *.h)
+file(GLOB_RECURSE HPP_FILES *.hpp)
 list(REMOVE_ITEM ${SRC_FILES} main.cpp)
 add_library(${PROJECT_NAME} ${SRC_FILES} ${H_FILES} ${HPP_FILES} main.qml qtquickcontrols2.conf)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${QT_PATH}/include/QtGui)
+target_include_directories(${PROJECT_NAME} PRIVATE ${QT_PATH}/include/QtQuick)
 target_include_directories(${PROJECT_NAME} PRIVATE .)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)

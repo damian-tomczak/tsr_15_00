@@ -13,7 +13,7 @@ QString NodeValueFinder::getResult(BlackBoard* blackboard)
         {
             allNodes.push_back(c);
 
-            if (c->outputPort.length() == 0)
+            if (c->mOutputPorts.length() == 0)
                 inputNodeOnly.append(c);
         }
     }

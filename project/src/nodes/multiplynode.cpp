@@ -1,5 +1,5 @@
 #include "multiplynode.h"
 
-MultiplyNode::MultiplyNode()
+MultiplyNode::MultiplyNode() : CoreNode("multiply")
 {
 }

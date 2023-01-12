@@ -1,5 +1,5 @@
 #include "dividenode.h"
 
-DivideNode::DivideNode()
+DivideNode::DivideNode() : CoreNode("divide")
 {
 }
