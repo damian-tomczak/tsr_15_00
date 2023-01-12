@@ -9,7 +9,7 @@ QString CoreNode::resultString()
         {
             for (int l = 0; l < mNumberBoxes.length(); l++)
             {
-                result += mNumberBoxes[l].text + "";
+                result += mNumberBoxes[l].mText + "";
             }
         }
     }

@@ -5,7 +5,6 @@
 class NumberBox
 {
 public:
-    NumberBox() : text("0") {}
-
-    QString text;
+    QString mText{"0"};
+    QPoint mPosition;
 };
