@@ -1,4 +1,4 @@
-#include "application.h"
+#include "app.h"
 
 #include <QGuiApplication.h>
 #include <QQmlApplicationEngine.h>
@@ -17,7 +17,7 @@
 
 namespace tsr
 {
-Application::Application(int argc, char* argv[])
+App::App(int argc, char* argv[])
 {
 #if defined(Q_OS_WIN)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -34,7 +34,7 @@ Application::Application(int argc, char* argv[])
     }
 }
 
-void Application::qmlRegister()
+void App::qmlRegister()
 {
     qmlRegisterType<Cursor>("cursor", 1, 0, "Cursor");
     qmlRegisterType<BlackBoard>("blackBoard", 1, 0, "Board");
@@ -51,13 +51,13 @@ void Application::qmlRegister()
     qmlRegisterType<ModuloNode>("modulonode", 1, 0, "ModuloNode");
 }
 
-void Application::run()
+void App::run()
 {
     std::cout << "Welcome " PROJECT_NAME " version: " PROJECT_VERSION "\n";
     mpApp->exec();
 }
 
-Application::~Application()
+App::~App()
 {
     delete mpEngine;
     delete mpApp;

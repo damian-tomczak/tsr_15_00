@@ -4,6 +4,8 @@
 #include <QPainter>
 
 #define DEFAULT_SQUARE_DIMENSION 25
+#define MAX_ZOOM 1.25f
+#define MIN_ZOOM 0.75f
 
 class BlackBoard : public QQuickPaintedItem
 {
@@ -15,7 +17,6 @@ public:
     BlackBoard() { setAcceptedMouseButtons(Qt::AllButtons); };
     bool rightClicked() const { return mIsRighClicked; };
 
-    Q_INVOKABLE void zoom(float);
 
 protected:
     void paint(QPainter* painter) override;
@@ -38,8 +39,10 @@ private:
     int mSquareDimension{ 25 };
     int mSquareNumber{ 5 };
     bool mIsRighClicked{};
-    float curZoom{ 1 };
+    float mCurZoom{ 1 };
 
     void drawGridLines(QPainter* painter);
+    void zoomAmountModifier(int amt);
+    void zoom(float amt);
     void zoomNodes();
 };

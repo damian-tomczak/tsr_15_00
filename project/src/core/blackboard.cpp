@@ -1,13 +1,5 @@
 #include "blackboard.h"
 
-void BlackBoard::zoom(float amount)
-{
-
-    mSquareDimension = static_cast<int>(amount * DEFAULT_SQUARE_DIMENSION);
-    zoomNodes();
-    update();
-}
-
 void BlackBoard::paint(QPainter* painter)
 {
     painter->setRenderHints(QPainter::Antialiasing, true);
@@ -17,17 +9,17 @@ void BlackBoard::paint(QPainter* painter)
 
 void BlackBoard::drawGridLines(QPainter* painter)
 {
-    int width = static_cast<int>(this->width());
-    int height = static_cast<int>(this->height());
+    int w = static_cast<int>(this->width());
+    int h = static_cast<int>(this->height());
 
-    painter->fillRect(0, 0, width, height, QBrush(mBackgroundColor));
+    painter->fillRect(0, 0, w, h, QBrush(mBackgroundColor));
 
-    int verticalLines = width / mSquareDimension + 1;
-    int horizontalLines = height / mSquareDimension + 1;
+    int vertLines = w / mSquareDimension + 1;
+    int horizLines = h / mSquareDimension + 1;
 
-    painter->drawRect(0, 0, width, height);
+    painter->drawRect(0, 0, w, h);
 
-    for (int i = -mSquareDimension; i < verticalLines; i++)
+    for (int i = -mSquareDimension; i < vertLines; i++)
     {
         if (i % mSquareNumber == 0)
         {
@@ -40,10 +32,10 @@ void BlackBoard::drawGridLines(QPainter* painter)
 
         painter->drawLine(i * mSquareDimension, 0,
             i * mSquareDimension,
-            height);
+            h);
     }
 
-    for (int i = -mSquareDimension; i < horizontalLines; i++)
+    for (int i = -mSquareDimension; i < horizLines; i++)
     {
         if (i % mSquareNumber == 0)
         {
@@ -55,7 +47,7 @@ void BlackBoard::drawGridLines(QPainter* painter)
         }
 
         painter->drawLine(0, i * mSquareDimension,
-            width, i * mSquareDimension);
+            w, i * mSquareDimension);
     }
 }
 
@@ -83,6 +75,33 @@ void BlackBoard::mouseReleaseEvent(QMouseEvent*)
     mMouseDownPosition = QPoint(0, 0);
 }
 
+void BlackBoard::zoomAmountModifier(int amt)
+{
+    if (amt > 0)
+    {
+        if (mCurZoom + 0.05f < MAX_ZOOM)
+        {
+            mCurZoom += 0.05f;
+        }
+    }
+    else
+    {
+        if (mCurZoom - 0.05f > MIN_ZOOM)
+        {
+            mCurZoom -= 0.05f;
+        }
+    }
+    zoom(mCurZoom);
+}
+
+void BlackBoard::zoom(float amt)
+{
+
+    mSquareDimension = static_cast<int>(amt * DEFAULT_SQUARE_DIMENSION);
+    zoomNodes();
+    update();
+}
+
 void BlackBoard::zoomNodes()
 {
     QObjectList allc = children();
@@ -91,7 +110,7 @@ void BlackBoard::zoomNodes()
         QQuickItem* c = dynamic_cast<QQuickItem*>(allc[i]);
         if (c != nullptr)
         {
-            c->setScale(static_cast<qreal>(curZoom));
+            c->setScale(static_cast<qreal>(mCurZoom));
         }
     }
 }

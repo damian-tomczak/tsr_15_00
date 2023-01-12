@@ -10,15 +10,15 @@ class QQmlApplicationEngine;
 
 namespace tsr
 {
-class Application final
+class App final
 {
-    NOT_COPYABLE(Application);
+    NOT_COPYABLE(App);
     QGuiApplication* mpApp;
     QQmlApplicationEngine* mpEngine;
 
 public:
-    Application(int argc, char* argv[]);
-    ~Application();
+    App(int argc, char* argv[]);
+    ~App();
 
     void run();
     void qmlRegister();
