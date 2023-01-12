@@ -5,6 +5,7 @@
 #include "core/numberboxcore.hpp"
 #include "core/port.h"
 #include "core/label.hpp"
+#include "core/blackboard.h"
 
 class CoreNode : public QQuickPaintedItem
 {
@@ -52,6 +53,8 @@ private:
 
     QPoint mLastMousePosition;
     bool mIsMouseClickedOnHeader{};
+
+    BlackBoard* parent() { return dynamic_cast<BlackBoard*>(parent()); }
 
     void drawBody(QPainter* painter);
     void drawTitle(QPainter* painter);

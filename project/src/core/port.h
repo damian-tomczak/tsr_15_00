@@ -15,6 +15,7 @@ struct Port
 
     QQuickItem* mParent{};
     Port* mTarget{};
+    Port* mInput{};
     PortType mType{ PortType::INPUT };
     QColor mColor{ Qt::green };
     QPoint mPosition;

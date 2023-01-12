@@ -47,4 +47,45 @@ struct NumberBox
         QPoint p = mPosition + QPoint(5, 2 * y / 3);
         painter->drawText(p, text);
     }
+
+    void keyPress(QKeyEvent* event)
+    {
+        if (event->key() == Qt::Key::Key_Backspace)
+        {
+            if (mCursorPos > 0)
+            {
+                mText.remove(mCursorPos - 1, 1);
+                mCursorPos--;
+            }
+        }
+        if (event->key() == Qt::Key::Key_Left)
+        {
+            if (mCursorPos > 0)
+            {
+                mCursorPos--;
+            }
+        }
+        if (event->key() == Qt::Key::Key_Right)
+        {
+            if (mCursorPos < mText.length())
+            {
+                mCursorPos++;
+            }
+        }
+        if ((event->key() >= 48 && event->key() <= 57) || event->key() == 46)
+        {
+            mText.insert(mCursorPos, static_cast<QChar>(event->key()));
+            mCursorPos++;
+        }
+        if (event->key() == Qt::Key::Key_Plus)
+        {
+            mText.insert(mCursorPos, '+');
+            mCursorPos++;
+        }
+        if (event->key() == Qt::Key::Key_Minus)
+        {
+            mText.insert(mCursorPos, '-');
+            mCursorPos++;
+        }
+    }
 };

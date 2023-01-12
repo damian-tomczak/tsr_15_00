@@ -184,17 +184,30 @@ void CoreNode::mousePressEvent(QMouseEvent* event)
 
 void CoreNode::mouseReleaseEvent(QMouseEvent* event)
 {
-
+    mIsMouseClickedOnHeader = false;
 }
 
 void CoreNode::focusOutEvent(QFocusEvent* event)
 {
-
+    if (event->lostFocus())
+    {
+        mpCurrentNumberBox = nullptr;
+        update();
+    }
 }
 
 void CoreNode::keyPressEvent(QKeyEvent* event)
 {
-
+    if (mpCurrentNumberBox != nullptr)
+    {
+        mpCurrentNumberBox->keyPress(event);
+        update();
+    }
+    if (event->key() == Qt::Key::Key_Delete)
+    {
+        deleteLater();
+        parent()->update();
+    }
 }
 
 bool CoreNode::isMouseOnHeader(QPoint point)
