@@ -1,10 +1,5 @@
 #include "blackboard.h"
 
-BlackBoard::BlackBoard()
-{
-    setAcceptedMouseButtons(Qt::AllButtons);
-}
-
 void BlackBoard::paint(QPainter* painter)
 {
     painter->setRenderHints(QPainter::Antialiasing, true);
@@ -17,64 +12,65 @@ void BlackBoard::drawGridLines(QPainter* painter)
     int width = static_cast<int>(this->width());
     int height = static_cast<int>(this->height());
 
-    painter->fillRect(0, 0, width, height, QBrush(backgroundColor));
+    painter->fillRect(0, 0, width, height, QBrush(mBackgroundColor));
 
-    int verticalLines = width / squareDimension + 1;
-    int horizontalLines = height / squareDimension + 1;
+    int verticalLines = width / mSquareDimension + 1;
+    int horizontalLines = height / mSquareDimension + 1;
 
     painter->drawRect(0, 0, width, height);
 
-    for (int i = -squareDimension; i < verticalLines; i++)
+    for (int i = -mSquareDimension; i < verticalLines; i++)
     {
-        if (i % squareNumber == 0)
+        if (i % mSquareNumber == 0)
         {
-            painter->setPen(QPen(largeLineColor, 2.5));
+            painter->setPen(QPen(mLargeLineColor, 2.5));
         }
         else
         {
-            painter->setPen(QPen(smallLineColor, 1));
+            painter->setPen(QPen(mSmallLineColor, 1));
         }
 
-        painter->drawLine(i * squareDimension, 0,
-            i * squareDimension,
+        painter->drawLine(i * mSquareDimension, 0,
+            i * mSquareDimension,
             height);
     }
 
-    for (int i = -squareDimension; i < horizontalLines; i++)
+    for (int i = -mSquareDimension; i < horizontalLines; i++)
     {
-        if (i % squareNumber == 0)
+        if (i % mSquareNumber == 0)
         {
-            painter->setPen(QPen(largeLineColor, 2.5));
+            painter->setPen(QPen(mLargeLineColor, 2.5));
         }
         else
         {
-            painter->setPen(QPen(smallLineColor, 1));
+            painter->setPen(QPen(mSmallLineColor, 1));
         }
 
-        painter->drawLine(0, i * squareDimension,
-            width, i * squareDimension);
+        painter->drawLine(0, i * mSquareDimension,
+            width, i * mSquareDimension);
     }
 }
 
 void BlackBoard::mousePressEvent(QMouseEvent* event)
 {
-    isMouseDown = true;
-    mouseDownPosition = event->pos();
+    mIsMouseDown = true;
+    mMouseDownPosition = event->pos();
     setFocus(true);
 
     if (event->button() == Qt::RightButton)
     {
-        isRighClicked = true;
+        mIsRighClicked = true;
         emit onRightMouseClickChanged(true);
     }
-    else {
-        isRighClicked = false;
+    else
+    {
+        mIsRighClicked = false;
         emit onRightMouseClickChanged(false);
     }
 }
 
 void BlackBoard::mouseReleaseEvent(QMouseEvent*)
 {
-    isMouseDown = false;
-    mouseDownPosition = QPoint(0, 0);
+    mIsMouseDown = false;
+    mMouseDownPosition = QPoint(0, 0);
 }

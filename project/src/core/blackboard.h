@@ -10,13 +10,13 @@ class BlackBoard : public QQuickPaintedItem
         Q_PROPERTY(bool rightClicked READ rightClicked NOTIFY onRightMouseClickChanged)
 
 public:
-    BlackBoard();
-    bool rightClicked() const { return isRighClicked; };
+    BlackBoard() { setAcceptedMouseButtons(Qt::AllButtons); };
+    bool rightClicked() const { return mIsRighClicked; };
 
 protected:
     void paint(QPainter* painter) override;
     void mousePressEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
 signals:
     void onRightMouseClickChanged(const bool&);
@@ -24,17 +24,17 @@ signals:
 public slots:
 
 private:
-    QColor backgroundColor{ 50, 50, 50 };
-    QColor smallLineColor{ 38, 38, 38 };
-    QColor largeLineColor{ 28, 28, 28 };
+    QColor mBackgroundColor{ 50, 50, 50 };
+    QColor mSmallLineColor{ 38, 38, 38 };
+    QColor mLargeLineColor{ 28, 28, 28 };
 
-    QPoint mouseDownPosition;
-    bool isMouseDown{};
+    QPoint mMouseDownPosition;
+    bool mIsMouseDown{};
 
-    int squareDimension{ 25 };
-    int squareNumber{ 5 };
+    int mSquareDimension{ 25 };
+    int mSquareNumber{ 5 };
 
     void drawGridLines(QPainter* painter);
 
-    bool isRighClicked{};
+    bool mIsRighClicked{};
 };
