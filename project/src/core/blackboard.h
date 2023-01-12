@@ -11,7 +11,7 @@ class BlackBoard : public QQuickPaintedItem
 
 public:
     BlackBoard();
-    bool rightClicked() const;
+    bool rightClicked() const { return isRighClicked; };
 
 protected:
     void paint(QPainter* painter) override;

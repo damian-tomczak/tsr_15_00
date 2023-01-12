@@ -161,3 +161,50 @@ void CoreNode::paint(QPainter* painter)
     drawLabels(painter);
     drawNumberBoxes(painter);
 }
+
+void CoreNode::mouseMoveEvent(QMouseEvent* event)
+{
+    if (mIsMouseClickedOnHeader)
+    {
+        QPoint curr = QPoint(static_cast<int>(position().x()), static_cast<int>(position().y()));
+        QPoint l = curr - mLastMousePosition + event->pos();
+        setPosition(l);
+    }
+}
+
+void CoreNode::mousePressEvent(QMouseEvent* event)
+{
+    setFocus(true);
+    mLastMousePosition = event->pos();
+    if (isMouseOnHeader(event->pos()))
+    {
+        mIsMouseClickedOnHeader = true;
+    }
+}
+
+void CoreNode::mouseReleaseEvent(QMouseEvent* event)
+{
+
+}
+
+void CoreNode::focusOutEvent(QFocusEvent* event)
+{
+
+}
+
+void CoreNode::keyPressEvent(QKeyEvent* event)
+{
+
+}
+
+bool CoreNode::isMouseOnHeader(QPoint point)
+{
+    if (point.x() > 0 && point.x() <= width())
+    {
+        if (point.y() > 0 && point.y() <= panelHeight())
+        {
+            return true;
+        }
+    }
+    return false;
+}

@@ -5,11 +5,6 @@ BlackBoard::BlackBoard()
     setAcceptedMouseButtons(Qt::AllButtons);
 }
 
-bool BlackBoard::rightClicked() const
-{
-    return isRighClicked;
-}
-
 void BlackBoard::paint(QPainter* painter)
 {
     painter->setRenderHints(QPainter::Antialiasing, true);

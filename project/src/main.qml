@@ -122,7 +122,7 @@ Window {
             id: board
             objectName: "board"
             anchors.fill: parent
-            onRightClickedChanged: contextMenu.popup()
+            onRightClickedChanged: if(board.rightClicked) contextMenu.popup()
 
             Result {
                 id:calc

@@ -22,6 +22,7 @@ public:
 
     QColor firstColor() const;
     QColor secondColor() const;
+    int panelHeight() const { return mPanelHeight; }
 
 public slots:
     void setTitle(const QString title);
@@ -30,6 +31,11 @@ public slots:
 
 protected:
     void paint(QPainter* painter) override;
+    void mouseMoveEvent(QMouseEvent* event)override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
+    void keyPressEvent(QKeyEvent* event)override;
 
 private:
     QString mTitle{ "Node" };
@@ -41,12 +47,17 @@ private:
     int mPanelHeight{ 40 };
     QColor mHighlightColor{ Qt::yellow };
 
-    Port* mCurrentPort;
-    NumberBox* mpCurrentNumberBox;
+    Port* mCurrentPort{};
+    NumberBox* mpCurrentNumberBox{};
+
+    QPoint mLastMousePosition;
+    bool mIsMouseClickedOnHeader{};
 
     void drawBody(QPainter* painter);
     void drawTitle(QPainter* painter);
     void drawPorts(QPainter* painter);
     void drawLabels(QPainter* painter);
     void drawNumberBoxes(QPainter* painter);
+
+    bool isMouseOnHeader(QPoint point);
 };
