@@ -13,8 +13,8 @@ namespace tsr
 class Application final
 {
     NOT_COPYABLE(Application);
-    QGuiApplication* app;
-    QQmlApplicationEngine* engine;
+    QGuiApplication* mpApp;
+    QQmlApplicationEngine* mpEngine;
 
 public:
     Application(int argc, char* argv[]);

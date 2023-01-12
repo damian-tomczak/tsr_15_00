@@ -5,9 +5,8 @@
 
 #include "numberboxcore.hpp"
 
-class Port
+struct Port
 {
-public:
     enum class PortType
     {
         INPUT,
@@ -19,6 +18,7 @@ public:
     PortType mType{ PortType::INPUT };
     QColor mColor{ Qt::green };
     QPoint mPosition;
+    float mRadius{ 10.f };
 
     QList<NumberBox> mNumberBoxes;
 

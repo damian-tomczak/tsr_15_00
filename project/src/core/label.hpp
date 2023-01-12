@@ -20,4 +20,11 @@ public:
         painter->setFont(mFont);
         painter->drawText(mPos, mText);
     }
+
+    void drawBody(QPainter* painter)
+    {
+        painter->setPen(mColor);
+        painter->setFont(mFont);
+        painter->drawText(mPos, mText);
+    }
 };

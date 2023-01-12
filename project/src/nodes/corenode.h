@@ -32,7 +32,21 @@ protected:
     void paint(QPainter* painter) override;
 
 private:
-    QString mTitle;
+    QString mTitle{ "Node" };
+    QColor mTitleColor{ Qt::white };
+    QFont mTitleFont{ "Segoe UI", 12, -1, true };
     QColor mFirstColor{ Qt::blue };
     QColor mSecondColor{ Qt::green };
+    QColor mBackgroundColor{ 40, 40, 40 };
+    int mPanelHeight{ 40 };
+    QColor mHighlightColor{ Qt::yellow };
+
+    Port* mCurrentPort;
+    NumberBox* mpCurrentNumberBox;
+
+    void drawBody(QPainter* painter);
+    void drawTitle(QPainter* painter);
+    void drawPorts(QPainter* painter);
+    void drawLabels(QPainter* painter);
+    void drawNumberBoxes(QPainter* painter);
 };

@@ -1,5 +1,7 @@
 #include "corenode.h"
 
+#pragma warning( disable : 4996 )
+
 QString CoreNode::resultString()
 {
     QString result = mFunctionName;
@@ -90,7 +92,72 @@ void CoreNode::setSecondColor(const QColor color)
     }
 }
 
-void CoreNode::paint(QPainter*)
+void CoreNode::drawBody(QPainter* painter)
 {
+    int w = static_cast<int>(width());
+    int h = static_cast<int>(height());
 
+    painter->fillRect(0, 0, w, h, QBrush(mBackgroundColor));
+
+    QLinearGradient g(QPoint(0, 0), QPoint(w, mPanelHeight));
+    g.setColorAt(0, mFirstColor);
+    g.setColorAt(1, mSecondColor);
+    painter->fillRect(0, 0, w, mPanelHeight, QBrush(g));
+
+
+    painter->setPen(mHighlightColor);
+    painter->drawRect(1, 1, w - 2, h - 2);
+    painter->drawRect(1, 1, w, mPanelHeight - 2);
+}
+
+void CoreNode::drawTitle(QPainter* painter)
+{
+    painter->setPen(mTitleColor);
+    painter->setFont(mTitleFont);
+    QFontMetrics f(mTitleFont);
+    int x = f.width(mTitle);
+    int y = f.height();
+    painter->drawText(x / 2, y, mTitle);
+}
+
+void CoreNode::drawPorts(QPainter* painter)
+{
+    painter->setRenderHint(QPainter::RenderHint::Antialiasing, true);
+    for (int i = 0; i < mInputPorts.length(); i++)
+    {
+        painter->setBrush(mInputPorts[i].mColor);
+        int r = static_cast<int>(mInputPorts[i].mRadius);
+        painter->drawEllipse(mInputPorts[i].mPosition, r, r);
+    }
+    for (int i = 0; i < mOutputPorts.length(); i++)
+    {
+        painter->setBrush(mOutputPorts[i].mColor);
+        int r = static_cast<int>(mOutputPorts[i].mRadius);
+        painter->drawEllipse(mOutputPorts[i].mPosition, r, r);
+    }
+}
+
+void CoreNode::drawLabels(QPainter* painter)
+{
+    for (int i = 0; i < mLabels.length(); i++)
+    {
+        mLabels[i].drawBody(painter);
+    }
+}
+
+void CoreNode::drawNumberBoxes(QPainter* painter)
+{
+    for (int i = 0; i < mNumberBoxes.length(); i++)
+    {
+        mNumberBoxes[i].drawBody(painter, mpCurrentNumberBox);
+    }
+}
+
+void CoreNode::paint(QPainter* painter)
+{
+    drawBody(painter);
+    drawTitle(painter);
+    drawPorts(painter);
+    drawLabels(painter);
+    drawNumberBoxes(painter);
 }
