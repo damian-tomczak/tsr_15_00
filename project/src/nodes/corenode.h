@@ -12,7 +12,7 @@ class CoreNode : public QQuickPaintedItem
     Q_OBJECT
 
 public:
-    CoreNode(const char* functionName) : mFunctionName(functionName) {}
+    CoreNode(const char* functionName) : mFunctionName(functionName) { setAcceptedMouseButtons(Qt::AllButtons); }
     QList<Port> mInputPorts;
     QList<Port> mOutputPorts;
     QList<NumberBox> mNumberBoxes;
