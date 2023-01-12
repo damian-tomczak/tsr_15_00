@@ -22,6 +22,7 @@ protected:
     void paint(QPainter* painter) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
+    void wheelEvent(QWheelEvent* event) override;
 
 signals:
     void onRightMouseClickChanged(const bool&);

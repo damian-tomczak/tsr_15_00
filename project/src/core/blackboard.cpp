@@ -1,5 +1,7 @@
 #include "blackboard.h"
 
+#pragma warning( disable : 4996 )
+
 void BlackBoard::paint(QPainter* painter)
 {
     painter->setRenderHints(QPainter::Antialiasing, true);
@@ -73,6 +75,11 @@ void BlackBoard::mouseReleaseEvent(QMouseEvent*)
 {
     mIsMouseDown = false;
     mMouseDownPosition = QPoint(0, 0);
+}
+
+void BlackBoard::wheelEvent(QWheelEvent* event)
+{
+    zoomAmountModifier(event->delta());
 }
 
 void BlackBoard::zoomAmountModifier(int amt)
