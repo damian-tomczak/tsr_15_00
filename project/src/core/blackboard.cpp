@@ -1,5 +1,13 @@
 #include "blackboard.h"
 
+void BlackBoard::zoom(float amount)
+{
+
+    mSquareDimension = static_cast<int>(amount * DEFAULT_SQUARE_DIMENSION);
+    zoomNodes();
+    update();
+}
+
 void BlackBoard::paint(QPainter* painter)
 {
     painter->setRenderHints(QPainter::Antialiasing, true);
@@ -73,4 +81,17 @@ void BlackBoard::mouseReleaseEvent(QMouseEvent*)
 {
     mIsMouseDown = false;
     mMouseDownPosition = QPoint(0, 0);
+}
+
+void BlackBoard::zoomNodes()
+{
+    QObjectList allc = children();
+    for (int i = 0; i < allc.length(); i++)
+    {
+        QQuickItem* c = dynamic_cast<QQuickItem*>(allc[i]);
+        if (c != nullptr)
+        {
+            c->setScale(static_cast<qreal>(curZoom));
+        }
+    }
 }

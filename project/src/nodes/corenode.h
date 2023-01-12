@@ -32,11 +32,11 @@ public slots:
 
 protected:
     void paint(QPainter* painter) override;
-    void mouseMoveEvent(QMouseEvent* event)override;
+    void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
-    void keyPressEvent(QKeyEvent* event)override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     QString mTitle{ "Node" };
@@ -53,8 +53,6 @@ private:
 
     QPoint mLastMousePosition;
     bool mIsMouseClickedOnHeader{};
-
-    BlackBoard* parent() { return dynamic_cast<BlackBoard*>(parent()); }
 
     void drawBody(QPainter* painter);
     void drawTitle(QPainter* painter);

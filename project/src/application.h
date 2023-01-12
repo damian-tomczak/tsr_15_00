@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "Tools.h"
+#include "tools.hpp"
 
 class QGuiApplication;
 class QQmlApplicationEngine;

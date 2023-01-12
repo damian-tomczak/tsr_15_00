@@ -3,6 +3,8 @@
 #include <QQuickPaintedItem>
 #include <QPainter>
 
+#define DEFAULT_SQUARE_DIMENSION 25
+
 class BlackBoard : public QQuickPaintedItem
 {
     Q_OBJECT
@@ -12,6 +14,8 @@ class BlackBoard : public QQuickPaintedItem
 public:
     BlackBoard() { setAcceptedMouseButtons(Qt::AllButtons); };
     bool rightClicked() const { return mIsRighClicked; };
+
+    Q_INVOKABLE void zoom(float);
 
 protected:
     void paint(QPainter* painter) override;
@@ -33,8 +37,9 @@ private:
 
     int mSquareDimension{ 25 };
     int mSquareNumber{ 5 };
+    bool mIsRighClicked{};
+    float curZoom{ 1 };
 
     void drawGridLines(QPainter* painter);
-
-    bool mIsRighClicked{};
+    void zoomNodes();
 };

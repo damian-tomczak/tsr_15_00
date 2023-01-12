@@ -206,7 +206,7 @@ void CoreNode::keyPressEvent(QKeyEvent* event)
     if (event->key() == Qt::Key::Key_Delete)
     {
         deleteLater();
-        parent()->update();
+        dynamic_cast<BlackBoard*>(parent())->update();
     }
 }
 
