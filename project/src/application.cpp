@@ -44,7 +44,7 @@ void Application::qmlRegister()
 
     qmlRegisterType<Var1DNode>("var1dnode", 1, 0, "Var1DNode");
 
-    qmlRegisterType<AddNode>("addnode", 1, 0, "Add");
+    qmlRegisterType<AddNode>("addnode", 1, 0, "AddNode");
     qmlRegisterType<SubtractNode>("subtractnode", 1, 0, "SubtractNode");
     qmlRegisterType<MultiplyNode>("multiplynode", 1, 0, "MultiplyNode");
     qmlRegisterType<DivideNode>("dividenode", 1, 0, "DivideNode");
