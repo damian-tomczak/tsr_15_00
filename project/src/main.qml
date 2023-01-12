@@ -122,7 +122,7 @@ Window {
             id: board
             objectName: "board"
             anchors.fill: parent
-            onRightClickedChanged: contextMenu.popup()
+            onRightClickedChanged: if(board.rightClicked) contextMenu.popup()
 
             Result {
                 id:calc
@@ -137,8 +137,8 @@ Window {
                     MenuItem {
                         text: "1D Var"
                         onClicked: {
-                            var newObject = Qt.createQmlObject('import var1d 1.0;
-                                    Var1D {x:'+curs.getCursor(win.x,win.y).x+'
+                            var newObject = Qt.createQmlObject('import var1dnode 1.0;
+                                    Var1DNode {x:'+curs.getCursor(win.x,win.y).x+'
                                          y:'+curs.getCursor(win.x,win.y).y+' }', board, "board");
                         }
                     }
@@ -152,7 +152,7 @@ Window {
                             text: "Add"
                             onClicked: {
                                 var newObject = Qt.createQmlObject('import addnode 1.0;
-                                    Add {x:'+curs.getCursor(win.x,win.y).x+'
+                                    AddNode {x:'+curs.getCursor(win.x,win.y).x+'
                                          y:'+curs.getCursor(win.x,win.y).y+' }', board, "board");
                             }
                         }
@@ -161,7 +161,7 @@ Window {
                             text: "Subtract"
                             onClicked: {
                                 var newObject = Qt.createQmlObject('import subtractnode 1.0;
-                                    Subtract {x:'+curs.getCursor(win.x,win.y).x+'
+                                    SubtractNode {x:'+curs.getCursor(win.x,win.y).x+'
                                          y:'+curs.getCursor(win.x,win.y).y+' }', board, "board");
                             }
                         }
@@ -170,7 +170,7 @@ Window {
                             text: "Multiply"
                             onClicked: {
                                 var newObject = Qt.createQmlObject('import multiplynode 1.0;
-                                    Multiply {x:'+curs.getCursor(win.x,win.y).x+'
+                                    MultiplyNode {x:'+curs.getCursor(win.x,win.y).x+'
                                          y:'+curs.getCursor(win.x,win.y).y+' }', board, "board");
                             }
                         }
@@ -178,7 +178,7 @@ Window {
                             text: "Divide"
                             onClicked: {
                                 var newObject = Qt.createQmlObject('import dividenode 1.0;
-                                    Divide {x:'+curs.getCursor(win.x,win.y).x+'
+                                    DivideNode {x:'+curs.getCursor(win.x,win.y).x+'
                                          y:'+curs.getCursor(win.x,win.y).y+' }', board, "board");
                             }
                         }
@@ -186,7 +186,7 @@ Window {
                             text: "Modulo"
                             onClicked: {
                                 var newObject = Qt.createQmlObject('import modulonode 1.0;
-                                    Modulo {x:'+curs.getCursor(win.x,win.y).x+'
+                                    ModuloNode {x:'+curs.getCursor(win.x,win.y).x+'
                                          y:'+curs.getCursor(win.x,win.y).y+' }', board, "board");
                             }
                         }
@@ -199,7 +199,7 @@ Window {
                         text:"Print"
                         onClicked: {
                             var newObject = Qt.createQmlObject('import printnode 1.0;
-                                    Print {x:'+curs.getCursor(win.x,win.y).x+'
+                                    PrintNode {x:'+curs.getCursor(win.x,win.y).x+'
                                          y:'+curs.getCursor(win.x,win.y).y+' }', board, "board");
                         }
                     }

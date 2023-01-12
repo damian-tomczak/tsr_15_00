@@ -1,4 +1,4 @@
-#include "application.h"
+#include "app.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -8,8 +8,8 @@ int main(int argc, char* argv[])
 {
     try
     {
-        tsr::Application application = tsr::Application(argc, argv);
-        application.run();
+        tsr::App app = tsr::App(argc, argv);
+        app.run();
     }
     catch(const std::exception& e)
     {

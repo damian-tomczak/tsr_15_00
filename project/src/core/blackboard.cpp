@@ -1,14 +1,6 @@
 #include "blackboard.h"
 
-BlackBoard::BlackBoard()
-{
-    setAcceptedMouseButtons(Qt::AllButtons);
-}
-
-bool BlackBoard::rightClicked() const
-{
-    return isRighClicked;
-}
+#pragma warning( disable : 4996 )
 
 void BlackBoard::paint(QPainter* painter)
 {
@@ -19,67 +11,113 @@ void BlackBoard::paint(QPainter* painter)
 
 void BlackBoard::drawGridLines(QPainter* painter)
 {
-    int width = static_cast<int>(this->width());
-    int height = static_cast<int>(this->height());
+    int w = static_cast<int>(this->width());
+    int h = static_cast<int>(this->height());
 
-    painter->fillRect(0, 0, width, height, QBrush(backgroundColor));
+    painter->fillRect(0, 0, w, h, QBrush(mBackgroundColor));
 
-    int vertLines = width / squareDimension + 1;
-    int horizLines = height / squareDimension + 1;
+    int vertLines = w / mSquareDimension + 1;
+    int horizLines = h / mSquareDimension + 1;
 
-    painter->drawRect(0, 0, width, height);
+    painter->drawRect(0, 0, w, h);
 
-    for (int i = -squareDimension; i < vertLines; i++)
+    for (int i = -mSquareDimension; i < vertLines; i++)
     {
-        if (i % squareNumber == 0)
+        if (i % mSquareNumber == 0)
         {
-            painter->setPen(QPen(largeLineColor, 2.5));
+            painter->setPen(QPen(mLargeLineColor, 2.5));
         }
         else
         {
-            painter->setPen(QPen(smallLineColor, 1));
+            painter->setPen(QPen(mSmallLineColor, 1));
         }
 
-        painter->drawLine(i * squareDimension, 0,
-            i * squareDimension,
-            height);
+        painter->drawLine(i * mSquareDimension, 0,
+            i * mSquareDimension,
+            h);
     }
 
-    for (int i = -squareDimension; i < horizLines; i++)
+    for (int i = -mSquareDimension; i < horizLines; i++)
     {
-        if (i % squareNumber == 0)
+        if (i % mSquareNumber == 0)
         {
-            painter->setPen(QPen(largeLineColor, 2.5));
+            painter->setPen(QPen(mLargeLineColor, 2.5));
         }
         else
         {
-            painter->setPen(QPen(smallLineColor, 1));
+            painter->setPen(QPen(mSmallLineColor, 1));
         }
 
-        painter->drawLine(0, i * squareDimension,
-            width, i * squareDimension);
+        painter->drawLine(0, i * mSquareDimension,
+            w, i * mSquareDimension);
     }
 }
 
 void BlackBoard::mousePressEvent(QMouseEvent* event)
 {
-    isMouseDown = true;
-    mouseDownPosition = event->pos();
+    mIsMouseDown = true;
+    mMouseDownPosition = event->pos();
     setFocus(true);
 
     if (event->button() == Qt::RightButton)
     {
-        isRighClicked = true;
+        mIsRighClicked = true;
         emit onRightMouseClickChanged(true);
     }
-    else {
-        isRighClicked = false;
+    else
+    {
+        mIsRighClicked = false;
         emit onRightMouseClickChanged(false);
     }
 }
 
 void BlackBoard::mouseReleaseEvent(QMouseEvent*)
 {
-    isMouseDown = false;
-    mouseDownPosition = QPoint(0, 0);
+    mIsMouseDown = false;
+    mMouseDownPosition = QPoint(0, 0);
+}
+
+void BlackBoard::wheelEvent(QWheelEvent* event)
+{
+    zoomAmountModifier(event->delta());
+}
+
+void BlackBoard::zoomAmountModifier(int amt)
+{
+    if (amt > 0)
+    {
+        if (mCurZoom + 0.05f < MAX_ZOOM)
+        {
+            mCurZoom += 0.05f;
+        }
+    }
+    else
+    {
+        if (mCurZoom - 0.05f > MIN_ZOOM)
+        {
+            mCurZoom -= 0.05f;
+        }
+    }
+    zoom(mCurZoom);
+}
+
+void BlackBoard::zoom(float amt)
+{
+
+    mSquareDimension = static_cast<int>(amt * DEFAULT_SQUARE_DIMENSION);
+    zoomNodes();
+    update();
+}
+
+void BlackBoard::zoomNodes()
+{
+    QObjectList allc = children();
+    for (int i = 0; i < allc.length(); i++)
+    {
+        QQuickItem* c = dynamic_cast<QQuickItem*>(allc[i]);
+        if (c != nullptr)
+        {
+            c->setScale(static_cast<qreal>(mCurZoom));
+        }
+    }
 }

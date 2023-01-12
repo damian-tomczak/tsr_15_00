@@ -5,21 +5,22 @@
 
 #include "numberboxcore.hpp"
 
-class Port
+struct Port
 {
-public:
-    Port();
-
-    enum PortType
+    enum class PortType
     {
-        Input,
-        OutPut
+        INPUT,
+        OUTPUT
     };
 
-    QQuickItem* parent;
-    Port* target;
-    PortType type = PortType::Input;
+    QQuickItem* mParent{};
+    Port* mTarget{};
+    Port* mInput{};
+    PortType mType{ PortType::INPUT };
+    QColor mColor{ Qt::green };
+    QPoint mPosition;
+    float mRadius{ 10.f };
 
-    QList<NumberBox> numberBoxList;
+    QList<NumberBox> mNumberBoxes;
 
 };

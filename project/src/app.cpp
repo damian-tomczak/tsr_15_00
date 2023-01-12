@@ -1,4 +1,4 @@
-#include "application.h"
+#include "app.h"
 
 #include <QGuiApplication.h>
 #include <QQmlApplicationEngine.h>
@@ -17,49 +17,49 @@
 
 namespace tsr
 {
-Application::Application(int argc, char* argv[])
+App::App(int argc, char* argv[])
 {
 #if defined(Q_OS_WIN)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-    app = new QGuiApplication(argc, argv);
-    engine = new QQmlApplicationEngine();
+    mpApp = new QGuiApplication(argc, argv);
+    mpEngine = new QQmlApplicationEngine();
 
     qmlRegister();
 
-    engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
-    if (engine->rootObjects().isEmpty())
+    mpEngine->load(QUrl(QStringLiteral("qrc:/main.qml")));
+    if (mpEngine->rootObjects().isEmpty())
     {
         throw std::runtime_error("failed to load qrc");
     }
 }
 
-void Application::qmlRegister()
+void App::qmlRegister()
 {
     qmlRegisterType<Cursor>("cursor", 1, 0, "Cursor");
     qmlRegisterType<BlackBoard>("blackBoard", 1, 0, "Board");
     qmlRegisterType<NodeValueFinder>("noderesults", 1, 0, "Result");
 
-    qmlRegisterType<PrintNode>("printnode", 1, 0, "Print");
+    qmlRegisterType<PrintNode>("printnode", 1, 0, "PrintNode");
 
-    qmlRegisterType<Var1DNode>("var1d", 1, 0, "Var1D");
+    qmlRegisterType<Var1DNode>("var1dnode", 1, 0, "Var1DNode");
 
-    qmlRegisterType<AddNode>("addnode", 1, 0, "Add");
-    qmlRegisterType<SubtractNode>("subtractnode", 1, 0, "Subtract");
-    qmlRegisterType<MultiplyNode>("multiplynode", 1, 0, "Multiply");
-    qmlRegisterType<DivideNode>("dividenode", 1, 0, "Divide");
-    qmlRegisterType<ModuloNode>("modulonode", 1, 0, "Modulo");
+    qmlRegisterType<AddNode>("addnode", 1, 0, "AddNode");
+    qmlRegisterType<SubtractNode>("subtractnode", 1, 0, "SubtractNode");
+    qmlRegisterType<MultiplyNode>("multiplynode", 1, 0, "MultiplyNode");
+    qmlRegisterType<DivideNode>("dividenode", 1, 0, "DivideNode");
+    qmlRegisterType<ModuloNode>("modulonode", 1, 0, "ModuloNode");
 }
 
-void Application::run()
+void App::run()
 {
     std::cout << "Welcome " PROJECT_NAME " version: " PROJECT_VERSION "\n";
-    app->exec();
+    mpApp->exec();
 }
 
-Application::~Application()
+App::~App()
 {
-    delete engine;
-    delete app;
+    delete mpEngine;
+    delete mpApp;
 }
 }
