@@ -3,20 +3,28 @@
 #include <QQuickPaintedItem>
 #include <QPainter>
 
+#include "port.h"
+
 #define DEFAULT_SQUARE_DIMENSION 25
 #define MAX_ZOOM 1.25f
 #define MIN_ZOOM 0.75f
 
-class BlackBoard : public QQuickPaintedItem
+class Board : public QQuickPaintedItem
 {
     Q_OBJECT
 
         Q_PROPERTY(bool rightClicked READ rightClicked NOTIFY onRightMouseClickChanged)
 
 public:
-    BlackBoard() { setAcceptedMouseButtons(Qt::AllButtons); };
-    bool rightClicked() const { return mIsRighClicked; };
+    Board() { setAcceptedMouseButtons(Qt::AllButtons); };
 
+    bool mIsDrawCurrentLine{};
+    Port::PortType mCurrentPortType{};
+    QColor mCurrentLineColor;
+    QPoint mFromCurrentLine;
+    QPoint mToCurrentLine;
+
+    bool rightClicked() const { return mIsRighClicked; };
 
 protected:
     void paint(QPainter* painter) override;
@@ -46,4 +54,7 @@ private:
     void zoomAmountModifier(int amt);
     void zoom(float amt);
     void zoomNodes();
+
+    void drawCurrentLines(QPainter* pPainter);
+    void drawConnectors(QPainter* painter);
 };

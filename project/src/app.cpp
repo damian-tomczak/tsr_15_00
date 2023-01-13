@@ -4,16 +4,16 @@
 #include <QQmlApplicationEngine.h>
 
 #include "core/cursor.h"
-#include "core/blackboard.h"
+#include "core/board.h"
 #include "core/nodevaluefinder.h"
 
-#include "nodes/addnode.h"
-#include "nodes/printnode.h"
-#include "nodes/dividenode.h"
-#include "nodes/modulonode.h"
-#include "nodes/multiplynode.h"
-#include "nodes/subtractnode.h"
-#include "nodes/var1dnode.h"
+#include "nodes/addnode.hpp"
+#include "nodes/printnode.hpp"
+#include "nodes/dividenode.hpp"
+#include "nodes/modulonode.hpp"
+#include "nodes/multiplynode.hpp"
+#include "nodes/subtractnode.hpp"
+#include "nodes/var1dnode.hpp"
 
 namespace tsr
 {
@@ -37,7 +37,7 @@ App::App(int argc, char* argv[])
 void App::qmlRegister()
 {
     qmlRegisterType<Cursor>("cursor", 1, 0, "Cursor");
-    qmlRegisterType<BlackBoard>("blackBoard", 1, 0, "Board");
+    qmlRegisterType<Board>("board", 1, 0, "Board");
     qmlRegisterType<NodeValueFinder>("noderesults", 1, 0, "Result");
 
     qmlRegisterType<PrintNode>("printnode", 1, 0, "PrintNode");

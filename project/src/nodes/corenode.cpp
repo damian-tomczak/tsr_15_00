@@ -2,6 +2,11 @@
 
 #pragma warning( disable : 4996 )
 
+inline QPoint convertQPoint(const QPointF& fPoint)
+{
+    return QPoint(static_cast<int>(fPoint.x()), static_cast<int>(fPoint.y()));
+}
+
 QString CoreNode::resultString()
 {
     QString result = mFunctionName;
@@ -92,125 +97,132 @@ void CoreNode::setSecondColor(const QColor color)
     }
 }
 
-void CoreNode::drawBody(QPainter* painter)
+void CoreNode::drawBody(QPainter* pPainter)
 {
     int w = static_cast<int>(width());
     int h = static_cast<int>(height());
 
-    painter->fillRect(0, 0, w, h, QBrush(mBackgroundColor));
+    pPainter->fillRect(0, 0, w, h, QBrush(mBackgroundColor));
 
     QLinearGradient g(QPoint(0, 0), QPoint(w, mPanelHeight));
     g.setColorAt(0, mFirstColor);
     g.setColorAt(1, mSecondColor);
-    painter->fillRect(0, 0, w, mPanelHeight, QBrush(g));
+    pPainter->fillRect(0, 0, w, mPanelHeight, QBrush(g));
 
 
-    painter->setPen(mHighlightColor);
-    painter->drawRect(1, 1, w - 2, h - 2);
-    painter->drawRect(1, 1, w, mPanelHeight - 2);
+    pPainter->setPen(mHighlightColor);
+    pPainter->drawRect(1, 1, w - 2, h - 2);
+    pPainter->drawRect(1, 1, w, mPanelHeight - 2);
 }
 
-void CoreNode::drawTitle(QPainter* painter)
+void CoreNode::drawTitle(QPainter* pPainter)
 {
-    painter->setPen(mTitleColor);
-    painter->setFont(mTitleFont);
+    pPainter->setPen(mTitleColor);
+    pPainter->setFont(mTitleFont);
     QFontMetrics f(mTitleFont);
     int x = f.width(mTitle);
     int y = f.height();
-    painter->drawText(x / 2, y, mTitle);
+    pPainter->drawText(x / 2, y, mTitle);
 }
 
-void CoreNode::drawPorts(QPainter* painter)
+void CoreNode::drawPorts(QPainter* pPainter)
 {
-    painter->setRenderHint(QPainter::RenderHint::Antialiasing, true);
+    pPainter->setRenderHint(QPainter::RenderHint::Antialiasing, true);
     for (int i = 0; i < mInputPorts.length(); i++)
     {
-        painter->setBrush(mInputPorts[i].mColor);
+        pPainter->setBrush(mInputPorts[i].mColor);
         int r = static_cast<int>(mInputPorts[i].mRadius);
-        painter->drawEllipse(mInputPorts[i].mPosition, r, r);
+        pPainter->drawEllipse(mInputPorts[i].mPosition, r, r);
     }
     for (int i = 0; i < mOutputPorts.length(); i++)
     {
-        painter->setBrush(mOutputPorts[i].mColor);
+        pPainter->setBrush(mOutputPorts[i].mColor);
         int r = static_cast<int>(mOutputPorts[i].mRadius);
-        painter->drawEllipse(mOutputPorts[i].mPosition, r, r);
+        pPainter->drawEllipse(mOutputPorts[i].mPosition, r, r);
     }
 }
 
-void CoreNode::drawLabels(QPainter* painter)
+void CoreNode::drawLabels(QPainter* pPainter)
 {
     for (int i = 0; i < mLabels.length(); i++)
     {
-        mLabels[i].drawBody(painter);
+        mLabels[i].drawBody(pPainter);
     }
 }
 
-void CoreNode::drawNumberBoxes(QPainter* painter)
+void CoreNode::drawNumberBoxes(QPainter* pPainter)
 {
     for (int i = 0; i < mNumberBoxes.length(); i++)
     {
-        mNumberBoxes[i].drawBody(painter, mpCurrentNumberBox);
+        mNumberBoxes[i].drawBody(pPainter, mpCurrentNumberBox);
     }
 }
 
-void CoreNode::paint(QPainter* painter)
+void CoreNode::paint(QPainter* pPainter)
 {
-    drawBody(painter);
-    drawTitle(painter);
-    drawPorts(painter);
-    drawLabels(painter);
-    drawNumberBoxes(painter);
+    drawBody(pPainter);
+    drawTitle(pPainter);
+    drawPorts(pPainter);
+    drawLabels(pPainter);
+    drawNumberBoxes(pPainter);
 }
 
-void CoreNode::mouseMoveEvent(QMouseEvent* event)
+void CoreNode::mouseMoveEvent(QMouseEvent* pEvent)
 {
     if (mIsMouseClickedOnHeader)
     {
         QPoint curr = QPoint(static_cast<int>(position().x()), static_cast<int>(position().y()));
-        QPoint l = curr - mLastMousePosition + event->pos();
+        QPoint l = curr - mLastMousePosition + pEvent->pos();
         setPosition(l);
     }
+    portLineMoveHelper(pEvent->pos());
 }
 
-void CoreNode::mousePressEvent(QMouseEvent* event)
+void CoreNode::mousePressEvent(QMouseEvent* pEvent)
 {
     setFocus(true);
-    mLastMousePosition = event->pos();
-    if (isMouseOnHeader(event->pos()))
+    mLastMousePosition = pEvent->pos();
+    if (isMouseOnHeader(pEvent->pos()))
     {
         mIsMouseClickedOnHeader = true;
     }
+    else
+    {
+        portClickHelper(pEvent->pos());
+        numberBoxClickHelper(pEvent->pos());
+    }
 }
 
-void CoreNode::mouseReleaseEvent(QMouseEvent* event)
+void CoreNode::mouseReleaseEvent(QMouseEvent* pEvent)
 {
     mIsMouseClickedOnHeader = false;
+    releasePortTargeter(pEvent->pos());
 }
 
-void CoreNode::focusOutEvent(QFocusEvent* event)
+void CoreNode::focusOutEvent(QFocusEvent* pEvent)
 {
-    if (event->lostFocus())
+    if (pEvent->lostFocus())
     {
         mpCurrentNumberBox = nullptr;
         update();
     }
 }
 
-void CoreNode::keyPressEvent(QKeyEvent* event)
+void CoreNode::keyPressEvent(QKeyEvent* pEvent)
 {
     if (mpCurrentNumberBox != nullptr)
     {
-        mpCurrentNumberBox->keyPress(event);
+        mpCurrentNumberBox->keyPress(pEvent);
         update();
     }
-    if (event->key() == Qt::Key::Key_Delete)
+    if (pEvent->key() == Qt::Key::Key_Delete)
     {
         deleteLater();
-        dynamic_cast<BlackBoard*>(parent())->update();
+        dynamic_cast<Board*>(parent())->update();
     }
 }
 
-bool CoreNode::isMouseOnHeader(QPoint point)
+bool CoreNode::isMouseOnHeader(const QPoint& point)
 {
     if (point.x() > 0 && point.x() <= width())
     {
@@ -220,4 +232,165 @@ bool CoreNode::isMouseOnHeader(QPoint point)
         }
     }
     return false;
+}
+
+void CoreNode::portClickHelper(const QPoint& point)
+{
+    Port* pPort = getClickedPort(point);
+    if (pPort != nullptr)
+    {
+        Board* pBoard = dynamic_cast<Board*>(parent());
+        pBoard->mIsDrawCurrentLine = true;
+        pBoard->mCurrentPortType = pPort->mType;
+        pBoard->mCurrentLineColor = pPort->mColor;
+        pBoard->mFromCurrentLine = pPort->getWorldPosition();
+        pBoard->mToCurrentLine = point + convertQPoint(position());
+        if (pPort->mType == Port::PortType::INPUT)
+        {
+            mIsInputPortClicked = true;
+
+        }
+        else
+        {
+            mIsOutPutPortClicked = true;
+        }
+        mCurrentPort = pPort;
+    }
+}
+
+void CoreNode::numberBoxClickHelper(const QPoint& point)
+{
+    NumberBox* pNumberBox = getClickedNumberBox(point);
+    if (pNumberBox != nullptr)
+    {
+        mpCurrentNumberBox = pNumberBox;
+    }
+    else
+    {
+        mpCurrentNumberBox = nullptr;
+
+    }
+    update();
+}
+
+NumberBox* CoreNode::getClickedNumberBox(const QPoint& point)
+{
+    NumberBox* pPort{};
+
+    for (int i = 0; i < mNumberBoxes.length(); i++)
+    {
+        if (abs(point.x() - mNumberBoxes[i].mPosition.x()) <= mNumberBoxes[i].mWidth)
+        {
+            if (abs(point.y() - mNumberBoxes[i].mPosition.y()) <= mNumberBoxes[i].mHeight)
+            {
+                pPort = &mNumberBoxes[i];
+            }
+        }
+    }
+    return pPort;
+}
+
+Port* CoreNode::getClickedPort(const QPoint& point)
+{
+    Port* pPort{};
+
+    for (int i = 0; i < mOutputPorts.length(); i++)
+    {
+        if (abs(point.x() - mOutputPorts[i].mPosition.x()) <= mOutputPorts[i].mRadius)
+        {
+            if (abs(point.y() - mOutputPorts[i].mPosition.y()) <= mOutputPorts[i].mRadius)
+            {
+                pPort = &mOutputPorts[i];
+            }
+        }
+    }
+    for (int i = 0; i < mInputPorts.length(); i++)
+    {
+        if (abs(point.x() - mInputPorts[i].mPosition.x()) <= mInputPorts[i].mRadius)
+        {
+            if (abs(point.y() - mInputPorts[i].mPosition.y()) <= mInputPorts[i].mRadius)
+            {
+                pPort = &mInputPorts[i];
+            }
+        }
+    }
+    return pPort;
+}
+
+void CoreNode::portLineMoveHelper(const QPoint& point)
+{
+    if (mIsInputPortClicked || mIsOutPutPortClicked)
+    {
+        Board* pBoard = dynamic_cast<Board*>(parent());
+        pBoard->mToCurrentLine = point + convertQPoint(position());
+        pBoard->mFromCurrentLine = mCurrentPort->getWorldPosition();
+    }
+    dynamic_cast<QQuickItem*>(parent())->update();
+}
+
+void CoreNode::releasePortTargeter(const QPoint& point)
+{
+    Board* pBoard = dynamic_cast<Board*>(parent());
+    pBoard->mIsDrawCurrentLine = false;
+    pBoard->update();
+    if (mIsInputPortClicked)
+    {
+        mIsInputPortClicked = false;
+        Port* pPort{};
+        pPort = pPort->getPortNearestAtPosition(point + convertQPoint(position()), parent(), this);
+        if (pPort != nullptr)
+        {
+            if (pPort->mType == Port::PortType::OUTPUT)
+            {
+                bindPort(pPort, mCurrentPort);
+            }
+        }
+        else
+        {
+            connectionRemover();
+        }
+    }
+    if (mIsOutPutPortClicked)
+    {
+        mIsOutPutPortClicked = false;
+        Port* pPort{};
+        pPort = pPort->getPortNearestAtPosition(point + convertQPoint(position()), parent(), this);
+        if (pPort != nullptr)
+        {
+            if (pPort->mType == Port::PortType::INPUT)
+            {
+                bindPort(mCurrentPort, pPort);
+            }
+        }
+        else
+        {
+            connectionRemover();
+        }
+    }
+    mCurrentPort = nullptr;
+}
+
+void CoreNode::connectionRemover()
+{
+    if (mCurrentPort == nullptr)
+    {
+        return;
+    }
+    if (mCurrentPort->mType == Port::PortType::INPUT)
+    {
+        mCurrentPort->mTarget = nullptr;
+    }
+    else
+    {
+        if (mCurrentPort->mInput != nullptr)
+        {
+            mCurrentPort->mInput->mTarget = nullptr;
+        }
+    }
+}
+
+void CoreNode::bindPort(Port* pPort1, Port* pPort2)
+{
+    pPort2->mTarget = pPort1;
+    pPort1->mInput = pPort2;
 }
