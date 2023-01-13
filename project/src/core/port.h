@@ -23,4 +23,6 @@ struct Port
 
     QList<NumberBox> mNumberBoxes;
 
+    QPoint getWorldPosition();
+
 };

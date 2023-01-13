@@ -2,6 +2,11 @@
 
 #pragma warning( disable : 4996 )
 
+inline QPoint convertQPoint(const QPointF& fPoint)
+{
+    return QPoint(static_cast<int>(fPoint.x()), static_cast<int>(fPoint.y()));
+}
+
 QString CoreNode::resultString()
 {
     QString result = mFunctionName;
@@ -229,26 +234,26 @@ bool CoreNode::isMouseOnHeader(const QPoint& point)
 
 void CoreNode::portClickHelper(const QPoint& point)
 {
-    //Port* pPort = getClickedPort(point);
-    //if (pPort != nullptr)
-    //{
-    //    Board* pBoard = dynamic_cast<Board*>(parent());
-    //    pBoard->drawCurrentLine = true;
-    //    pBoard->currentPortType = pPort->mType;
-    //    pBoard->currentLineColor = pPort->mColor;
-    //    pBoard->fromCurrentLine = pPort->GetWorldPosition();
-    //    pBoard->toCurrentLine = point + ConvertQPoint(position());
-    //    if (pPort->mType == Port::PortType::INPUT)
-    //    {
-    //        mIsInputPortClicked = true;
+    Port* pPort = getClickedPort(point);
+    if (pPort != nullptr)
+    {
+        Board* pBoard = dynamic_cast<Board*>(parent());
+        pBoard->mIsDrawCurrentLine = true;
+        pBoard->mCurrentPortType = pPort->mType;
+        pBoard->mCurrentLineColor = pPort->mColor;
+        pBoard->mFromCurrentLine = pPort->getWorldPosition();
+        pBoard->mToCurrentLine = point + convertQPoint(position());
+        if (pPort->mType == Port::PortType::INPUT)
+        {
+            mIsInputPortClicked = true;
 
-    //    }
-    //    else
-    //    {
-    //        mIsOutPutPortClicked = true;
-    //    }
-    //    mCurrentPort = pPort;
-    //}
+        }
+        else
+        {
+            mIsOutPutPortClicked = true;
+        }
+        mCurrentPort = pPort;
+    }
 }
 
 void CoreNode::numberBoxClickHelper(const QPoint& point)

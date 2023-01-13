@@ -7,6 +7,8 @@ void Board::paint(QPainter* painter)
     painter->setRenderHints(QPainter::Antialiasing, true);
     painter->setPen(Qt::black);
     drawGridLines(painter);
+    //drawConnectors(painter);
+    drawCurrentLines(painter);
 }
 
 void Board::drawGridLines(QPainter* painter)
@@ -118,6 +120,34 @@ void Board::zoomNodes()
         if (c != nullptr)
         {
             c->setScale(static_cast<qreal>(mCurZoom));
+        }
+    }
+}
+
+void Board::drawCurrentLines(QPainter* pPainter)
+{
+    if (mIsDrawCurrentLine)
+    {
+        if (mCurrentPortType == Port::PortType::OUTPUT)
+        {
+            QPoint p1 = mFromCurrentLine;
+            QPoint p2 = mToCurrentLine;
+
+            pPainter->setPen(QPen(mCurrentLineColor, 5));
+            pPainter->drawLine(p1.x(), p1.y(), p1.x() + 40, p1.y());
+            pPainter->drawLine(p1.x() + 40, p1.y(), p2.x() - 40, p2.y());
+            pPainter->drawLine(p2.x() - 40, p2.y(), p2.x(), p2.y());
+
+        }
+        else
+        {
+            QPoint p1 = mFromCurrentLine;
+            QPoint p2 = mToCurrentLine;
+
+            pPainter->setPen(QPen(mCurrentLineColor, 5));
+            pPainter->drawLine(p1.x(), p1.y(), p1.x() - 40, p1.y());
+            pPainter->drawLine(p1.x() - 40, p1.y(), p2.x() + 40, p2.y());
+            pPainter->drawLine(p2.x() + 40, p2.y(), p2.x(), p2.y());
         }
     }
 }
