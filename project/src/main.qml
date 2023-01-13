@@ -1,7 +1,8 @@
-import QtQuick 2.15
+﻿import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.1
+import QtQuick.Layouts 1.0
 import cursor 1.0
 import noderesults 1.0
 import board 1.0
@@ -11,7 +12,7 @@ Window {
     visible: true
     width: 1280
     height: 720
-    title: qsTr("Block-Based Programming Language")
+    title: "Block-Based Programming Language"
 
     Cursor
     {
@@ -27,7 +28,6 @@ Window {
         anchors.leftMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
-
         Button {
             text: "HELP"
             onClicked: help.open()
@@ -39,9 +39,18 @@ Window {
             x: (window.width - width) / 2
             y: (window.height - height) / 2
             parent: ApplicationWindow.overlay
-            Text {
-                text: "Click Right Mouse Button to see nodes to select."
+            ColumnLayout {
+                Text {
+                    text: "1. Click Right Mouse Button to see nodes to select\n2. If needed insert data into a created node\n3. Drag and drop ports\n4. Click 'RUN' button\n"
+                }
+                Text {
+                    text: "Still do you need help?\ncontact@damian-tomczak.pl"
+                }
+                Text {
+                    text: "University project made by:\nDamian Tomczak\nDominik Słodkowski\nBartosz Rybiński"
+                }
             }
+
             standardButtons: StandardButton.Ok
         }
 
@@ -79,7 +88,6 @@ Window {
         anchors.leftMargin: 0
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
-
         Rectangle {
             id: consoleHeaderPanel
             x: 0
@@ -92,8 +100,6 @@ Window {
             anchors.leftMargin: 0
             anchors.right: parent.right
             anchors.rightMargin: 0
-
-
             Label {
                 id: label
                 x: 8
@@ -141,7 +147,6 @@ Window {
             objectName: "board"
             anchors.fill: parent
             onRightClickedChanged: if(board.rightClicked) contextMenu.popup()
-
             Result {
                 id: calc
             }
@@ -149,10 +154,8 @@ Window {
             Menu {
                 id: contextMenu
                 cascade: true
-
                 Menu {
                     title: "Input"
-
                     MenuItem {
                         text: "1D Var"
                         onClicked: {
@@ -167,7 +170,6 @@ Window {
                 Menu
                 {
                     title: "Math"
-
                         MenuItem {
                             text: "Add"
                             onClicked: {
