@@ -7,14 +7,14 @@
 #define MAX_ZOOM 1.25f
 #define MIN_ZOOM 0.75f
 
-class BlackBoard : public QQuickPaintedItem
+class Board : public QQuickPaintedItem
 {
     Q_OBJECT
 
         Q_PROPERTY(bool rightClicked READ rightClicked NOTIFY onRightMouseClickChanged)
 
 public:
-    BlackBoard() { setAcceptedMouseButtons(Qt::AllButtons); };
+    Board() { setAcceptedMouseButtons(Qt::AllButtons); };
     bool rightClicked() const { return mIsRighClicked; };
 
 

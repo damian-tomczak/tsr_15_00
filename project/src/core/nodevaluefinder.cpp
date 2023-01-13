@@ -1,11 +1,11 @@
 #include "nodevaluefinder.h"
 
-QString NodeValueFinder::getResult(BlackBoard* blackboard)
+QString NodeValueFinder::getResult(Board* pBoard)
 {
     QList<CoreNode*> allNodes;
     QList<CoreNode*> inputNodeOnly;
 
-    QObjectList children = blackboard->children();
+    QObjectList children = pBoard->children();
     for (int i = 0; i < children.size(); i++)
     {
         CoreNode* c = dynamic_cast<CoreNode*>(children[i]);
@@ -14,11 +14,13 @@ QString NodeValueFinder::getResult(BlackBoard* blackboard)
             allNodes.push_back(c);
 
             if (c->mOutputPorts.length() == 0)
+            {
                 inputNodeOnly.append(c);
+            }
         }
     }
 
-    QString res = "";
+    QString res;
 
     for (int i = 0; i < inputNodeOnly.size(); i++)
     {

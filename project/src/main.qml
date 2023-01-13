@@ -4,7 +4,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.1
 import cursor 1.0
 import noderesults 1.0
-import blackBoard 1.0
+import board 1.0
 
 Window {
     id: window
@@ -143,12 +143,13 @@ Window {
             onRightClickedChanged: if(board.rightClicked) contextMenu.popup()
 
             Result {
-                id:calc
+                id: calc
             }
 
             Menu {
                 id: contextMenu
                 cascade: true
+
                 Menu {
                     title: "Input"
 
@@ -162,6 +163,7 @@ Window {
                     }
 
                 }
+
                 Menu
                 {
                     title: "Math"
@@ -192,6 +194,7 @@ Window {
                                          y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
                             }
                         }
+
                         MenuItem {
                             text: "Divide"
                             onClicked: {
@@ -200,6 +203,7 @@ Window {
                                          y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
                             }
                         }
+
                         MenuItem {
                             text: "Modulo"
                             onClicked: {

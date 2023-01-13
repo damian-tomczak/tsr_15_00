@@ -5,7 +5,7 @@
 #include "core/numberboxcore.hpp"
 #include "core/port.h"
 #include "core/label.hpp"
-#include "core/blackboard.h"
+#include "core/board.h"
 
 class CoreNode : public QQuickPaintedItem
 {
@@ -31,12 +31,12 @@ public slots:
     void setSecondColor(const QColor color);
 
 protected:
-    void paint(QPainter* painter) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
-    void focusOutEvent(QFocusEvent* event) override;
-    void keyPressEvent(QKeyEvent* event) override;
+    void paint(QPainter* pPainter) override;
+    void mouseMoveEvent(QMouseEvent* pEvent) override;
+    void mousePressEvent(QMouseEvent* pEvent) override;
+    void mouseReleaseEvent(QMouseEvent* pEvent) override;
+    void focusOutEvent(QFocusEvent* pEvent) override;
+    void keyPressEvent(QKeyEvent* pEvent) override;
 
 private:
     QString mTitle{ "Node" };
@@ -53,16 +53,19 @@ private:
 
     QPoint mLastMousePosition;
     bool mIsMouseClickedOnHeader{};
+    bool mIsOutPutPortClicked{};
+    bool mIsInputPortClicked{};
 
-    void drawBody(QPainter* painter);
-    void drawTitle(QPainter* painter);
-    void drawPorts(QPainter* painter);
-    void drawLabels(QPainter* painter);
-    void drawNumberBoxes(QPainter* painter);
+    void drawBody(QPainter* pPainter);
+    void drawTitle(QPainter* pPainter);
+    void drawPorts(QPainter* pPainter);
+    void drawLabels(QPainter* pPainter);
+    void drawNumberBoxes(QPainter* pPainter);
 
     bool isMouseOnHeader(const QPoint& point);
     void portClickHelper(const QPoint& point);
     void numberBoxClickHelper(const QPoint& point);
 
     NumberBox* getClickedNumberBox(const QPoint& point);
+    Port* getClickedPort(const QPoint& point);
 };

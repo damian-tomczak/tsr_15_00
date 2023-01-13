@@ -1,15 +1,15 @@
-#include "blackboard.h"
+#include "board.h"
 
 #pragma warning( disable : 4996 )
 
-void BlackBoard::paint(QPainter* painter)
+void Board::paint(QPainter* painter)
 {
     painter->setRenderHints(QPainter::Antialiasing, true);
     painter->setPen(Qt::black);
     drawGridLines(painter);
 }
 
-void BlackBoard::drawGridLines(QPainter* painter)
+void Board::drawGridLines(QPainter* painter)
 {
     int w = static_cast<int>(this->width());
     int h = static_cast<int>(this->height());
@@ -53,7 +53,7 @@ void BlackBoard::drawGridLines(QPainter* painter)
     }
 }
 
-void BlackBoard::mousePressEvent(QMouseEvent* event)
+void Board::mousePressEvent(QMouseEvent* event)
 {
     mIsMouseDown = true;
     mMouseDownPosition = event->pos();
@@ -71,18 +71,18 @@ void BlackBoard::mousePressEvent(QMouseEvent* event)
     }
 }
 
-void BlackBoard::mouseReleaseEvent(QMouseEvent*)
+void Board::mouseReleaseEvent(QMouseEvent*)
 {
     mIsMouseDown = false;
     mMouseDownPosition = QPoint(0, 0);
 }
 
-void BlackBoard::wheelEvent(QWheelEvent* event)
+void Board::wheelEvent(QWheelEvent* event)
 {
     zoomAmountModifier(event->delta());
 }
 
-void BlackBoard::zoomAmountModifier(int amt)
+void Board::zoomAmountModifier(int amt)
 {
     if (amt > 0)
     {
@@ -101,7 +101,7 @@ void BlackBoard::zoomAmountModifier(int amt)
     zoom(mCurZoom);
 }
 
-void BlackBoard::zoom(float amt)
+void Board::zoom(float amt)
 {
 
     mSquareDimension = static_cast<int>(amt * DEFAULT_SQUARE_DIMENSION);
@@ -109,7 +109,7 @@ void BlackBoard::zoom(float amt)
     update();
 }
 
-void BlackBoard::zoomNodes()
+void Board::zoomNodes()
 {
     QObjectList allc = children();
     for (int i = 0; i < allc.length(); i++)

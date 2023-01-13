@@ -16,7 +16,7 @@ struct NumberBox
     QColor mHighlightColor{ 34, 141, 255 };
     QColor mBackgroundColor{ 60, 60, 60 };
     QColor mForeGroundColor{ Qt::white };
-    int mCursorPos{ 0 };
+    int mCursorPos{ 1 };
     int MaxCharacters{ 8 };
 
     void drawBody(QPainter* painter, NumberBox* currentNumberBox)
