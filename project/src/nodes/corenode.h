@@ -68,4 +68,8 @@ private:
 
     NumberBox* getClickedNumberBox(const QPoint& point);
     Port* getClickedPort(const QPoint& point);
+    void portLineMoveHelper(const QPoint& point);
+    void releasePortTargeter(const QPoint& point);
+    void connectionRemover();
+    void bindPort(Port* pPort1, Port* pPort2);
 };

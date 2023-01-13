@@ -1,4 +1,5 @@
 #include "board.h"
+#include "nodes/corenode.h"
 
 #pragma warning( disable : 4996 )
 
@@ -7,7 +8,7 @@ void Board::paint(QPainter* painter)
     painter->setRenderHints(QPainter::Antialiasing, true);
     painter->setPen(Qt::black);
     drawGridLines(painter);
-    //drawConnectors(painter);
+    drawConnectors(painter);
     drawCurrentLines(painter);
 }
 
@@ -113,13 +114,13 @@ void Board::zoom(float amt)
 
 void Board::zoomNodes()
 {
-    QObjectList allc = children();
-    for (int i = 0; i < allc.length(); i++)
+    QObjectList children = this->children();
+    for (int i = 0; i < children.length(); i++)
     {
-        QQuickItem* c = dynamic_cast<QQuickItem*>(allc[i]);
-        if (c != nullptr)
+        QQuickItem* pChild = dynamic_cast<QQuickItem*>(children[i]);
+        if (pChild != nullptr)
         {
-            c->setScale(static_cast<qreal>(mCurZoom));
+            pChild->setScale(static_cast<qreal>(mCurZoom));
         }
     }
 }
@@ -148,6 +149,32 @@ void Board::drawCurrentLines(QPainter* pPainter)
             pPainter->drawLine(p1.x(), p1.y(), p1.x() - 40, p1.y());
             pPainter->drawLine(p1.x() - 40, p1.y(), p2.x() + 40, p2.y());
             pPainter->drawLine(p2.x() + 40, p2.y(), p2.x(), p2.y());
+        }
+    }
+}
+
+void Board::drawConnectors(QPainter* painter)
+{
+    QObjectList children = this->children();
+    for (int i = 0; i < children.length(); i++)
+    {
+        CoreNode* pNode = dynamic_cast<CoreNode*>(children[i]);
+        if (pNode != nullptr)
+        {
+
+            for (int j = 0; j < pNode->mInputPorts.length(); j++)
+            {
+                if (pNode->mInputPorts[j].mTarget != nullptr)
+                {
+                    QPoint p1 = pNode->mInputPorts[j].mTarget->getWorldPosition();
+                    QPoint p2 = pNode->mInputPorts[j].getWorldPosition();
+
+                    painter->setPen(QPen(pNode->mInputPorts[j].mColor, 5));
+                    painter->drawLine(p1.x(), p1.y(), p1.x() + 40, p1.y());
+                    painter->drawLine(p1.x() + 40, p1.y(), p2.x() - 40, p2.y());
+                    painter->drawLine(p2.x() - 40, p2.y(), p2.x(), p2.y());
+                }
+            }
         }
     }
 }

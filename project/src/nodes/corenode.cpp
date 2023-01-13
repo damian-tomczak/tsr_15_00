@@ -175,6 +175,7 @@ void CoreNode::mouseMoveEvent(QMouseEvent* pEvent)
         QPoint l = curr - mLastMousePosition + pEvent->pos();
         setPosition(l);
     }
+    portLineMoveHelper(pEvent->pos());
 }
 
 void CoreNode::mousePressEvent(QMouseEvent* pEvent)
@@ -192,9 +193,10 @@ void CoreNode::mousePressEvent(QMouseEvent* pEvent)
     }
 }
 
-void CoreNode::mouseReleaseEvent(QMouseEvent*)
+void CoreNode::mouseReleaseEvent(QMouseEvent* pEvent)
 {
     mIsMouseClickedOnHeader = false;
+    releasePortTargeter(pEvent->pos());
 }
 
 void CoreNode::focusOutEvent(QFocusEvent* pEvent)
@@ -313,4 +315,82 @@ Port* CoreNode::getClickedPort(const QPoint& point)
         }
     }
     return pPort;
+}
+
+void CoreNode::portLineMoveHelper(const QPoint& point)
+{
+    if (mIsInputPortClicked || mIsOutPutPortClicked)
+    {
+        Board* pBoard = dynamic_cast<Board*>(parent());
+        pBoard->mToCurrentLine = point + convertQPoint(position());
+        pBoard->mFromCurrentLine = mCurrentPort->getWorldPosition();
+    }
+    dynamic_cast<QQuickItem*>(parent())->update();
+}
+
+void CoreNode::releasePortTargeter(const QPoint& point)
+{
+    Board* pBoard = dynamic_cast<Board*>(parent());
+    pBoard->mIsDrawCurrentLine = false;
+    pBoard->update();
+    if (mIsInputPortClicked)
+    {
+        mIsInputPortClicked = false;
+        Port* pPort{};
+        pPort = pPort->getPortNearestAtPosition(point + convertQPoint(position()), parent(), this);
+        if (pPort != nullptr)
+        {
+            if (pPort->mType == Port::PortType::OUTPUT)
+            {
+                bindPort(pPort, mCurrentPort);
+            }
+        }
+        else
+        {
+            connectionRemover();
+        }
+    }
+    if (mIsOutPutPortClicked)
+    {
+        mIsOutPutPortClicked = false;
+        Port* pPort{};
+        pPort = pPort->getPortNearestAtPosition(point + convertQPoint(position()), parent(), this);
+        if (pPort != nullptr)
+        {
+            if (pPort->mType == Port::PortType::INPUT)
+            {
+                bindPort(mCurrentPort, pPort);
+            }
+        }
+        else
+        {
+            connectionRemover();
+        }
+    }
+    mCurrentPort = nullptr;
+}
+
+void CoreNode::connectionRemover()
+{
+    if (mCurrentPort == nullptr)
+    {
+        return;
+    }
+    if (mCurrentPort->mType == Port::PortType::INPUT)
+    {
+        mCurrentPort->mTarget = nullptr;
+    }
+    else
+    {
+        if (mCurrentPort->mInput != nullptr)
+        {
+            mCurrentPort->mInput->mTarget = nullptr;
+        }
+    }
+}
+
+void CoreNode::bindPort(Port* pPort1, Port* pPort2)
+{
+    pPort2->mTarget = pPort1;
+    pPort1->mInput = pPort2;
 }

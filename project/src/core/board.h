@@ -56,4 +56,5 @@ private:
     void zoomNodes();
 
     void drawCurrentLines(QPainter* pPainter);
+    void drawConnectors(QPainter* painter);
 };
