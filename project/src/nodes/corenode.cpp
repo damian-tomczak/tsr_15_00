@@ -180,6 +180,11 @@ void CoreNode::mousePressEvent(QMouseEvent* event)
     {
         mIsMouseClickedOnHeader = true;
     }
+    else
+    {
+        portClickHelper(event->pos());
+        numberBoxClickHelper(event->pos());
+    }
 }
 
 void CoreNode::mouseReleaseEvent(QMouseEvent* event)
@@ -210,7 +215,7 @@ void CoreNode::keyPressEvent(QKeyEvent* event)
     }
 }
 
-bool CoreNode::isMouseOnHeader(QPoint point)
+bool CoreNode::isMouseOnHeader(const QPoint& point)
 {
     if (point.x() > 0 && point.x() <= width())
     {
@@ -220,4 +225,40 @@ bool CoreNode::isMouseOnHeader(QPoint point)
         }
     }
     return false;
+}
+
+void CoreNode::portClickHelper(const QPoint& point)
+{
+}
+
+void CoreNode::numberBoxClickHelper(const QPoint& point)
+{
+    NumberBox* c = getClickedNumberBox(point);
+    if (c != nullptr)
+    {
+        mpCurrentNumberBox = c;
+    }
+    else
+    {
+        mpCurrentNumberBox = nullptr;
+
+    }
+    update();
+}
+
+NumberBox* CoreNode::getClickedNumberBox(const QPoint& point)
+{
+    NumberBox* p{};
+
+    for (int i = 0; i < mNumberBoxes.length(); i++)
+    {
+        if (abs(point.x() - mNumberBoxes[i].mPosition.x()) <= mNumberBoxes[i].mWidth)
+        {
+            if (abs(point.y() - mNumberBoxes[i].mPosition.y()) <= mNumberBoxes[i].mHeight)
+            {
+                p = &mNumberBoxes[i];
+            }
+        }
+    }
+    return p;
 }

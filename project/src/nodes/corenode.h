@@ -60,5 +60,9 @@ private:
     void drawLabels(QPainter* painter);
     void drawNumberBoxes(QPainter* painter);
 
-    bool isMouseOnHeader(QPoint point);
+    bool isMouseOnHeader(const QPoint& point);
+    void portClickHelper(const QPoint& point);
+    void numberBoxClickHelper(const QPoint& point);
+
+    NumberBox* getClickedNumberBox(const QPoint& point);
 };
