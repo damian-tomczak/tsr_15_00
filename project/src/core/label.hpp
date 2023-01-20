@@ -9,22 +9,22 @@
 class Label
 {
 public:
-    QString nText{};
-    QFont nFont{ "Segoe UI", 12, -1, true };
-    QPoint nPos{ 0, 0 };
-    QColor nColor{ Qt::white };
+    QString mText{};
+    QFont mFont{ "Segoe UI", 12, -1, true };
+    QPoint mPos{ 0, 0 };
+    QColor mColor{ Qt::white };
 
     void paint(QPainter* painter)
     {
-        painter->setPen(nColor);
-        painter->setFont(nFont);
-        painter->drawText(nPos, nText);
+        painter->setPen(mColor);
+        painter->setFont(mFont);
+        painter->drawText(mPos, mText);
     }
 
     void drawBody(QPainter* painter)
     {
-        painter->setPen(nColor);
-        painter->setFont(nFont);
-        painter->drawText(nPos, nText);
+        painter->setPen(mColor);
+        painter->setFont(mFont);
+        painter->drawText(mPos, mText);
     }
 };

@@ -12,18 +12,18 @@ class CoreNode : public QQuickPaintedItem
     Q_OBJECT
 
 public:
-    CoreNode(const char* functionName) : nFunctionName(functionName) { setAcceptedMouseButtons(Qt::AllButtons); }
-    QList<Port> nInputPorts;
-    QList<Port> nOutputPorts;
-    QList<NumberBox> nNumberBoxes;
-    QList<Label> nLabels;
-    QString nFunctionName;
+    CoreNode(const char* functionName) : mFunctionName(functionName) { setAcceptedMouseButtons(Qt::AllButtons); }
+    QList<Port> mInputPorts;
+    QList<Port> mOutputPorts;
+    QList<NumberBox> mNumberBoxes;
+    QList<Label> mLabels;
+    QString mFunctionName;
 
     QString resultString();
 
     QColor firstColor() const;
     QColor secondColor() const;
-    int panelHeight() const { return nPanelHeight; }
+    int panelHeight() const { return mPanelHeight; }
 
 public slots:
     void setTitle(const QString title);
@@ -39,22 +39,22 @@ protected:
     void keyPressEvent(QKeyEvent* pEvent) override;
 
 private:
-    QString nTitle{ "Node" };
-    QColor nTitleColor{ Qt::white };
-    QFont nTitleFont{ "Segoe UI", 12, -1, true };
-    QColor nFirstColor{ Qt::blue };
-    QColor nSecondColor{ Qt::green };
-    QColor nBackgroundColor{ 40, 40, 40 };
-    int nPanelHeight{ 40 };
-    QColor nHighlightColor{ Qt::yellow };
+    QString mTitle{ "Node" };
+    QColor mTitleColor{ Qt::white };
+    QFont mTitleFont{ "Segoe UI", 12, -1, true };
+    QColor mFirstColor{ Qt::blue };
+    QColor mSecondColor{ Qt::green };
+    QColor mBackgroundColor{ 40, 40, 40 };
+    int mPanelHeight{ 40 };
+    QColor mHighlightColor{ Qt::yellow };
 
-    Port* nCurrentPort{};
-    NumberBox* npCurrentNumberBox{};
+    Port* mCurrentPort{};
+    NumberBox* mpCurrentNumberBox{};
 
-    QPoint nLastMousePosition;
-    bool nIsMouseClickedOnHeader{};
-    bool nIsOutPutPortClicked{};
-    bool nIsInputPortClicked{};
+    QPoint mLastMousePosition;
+    bool mIsMouseClickedOnHeader{};
+    bool mIsOutPutPortClicked{};
+    bool mIsInputPortClicked{};
 
     void drawBody(QPainter* pPainter);
     void drawTitle(QPainter* pPainter);

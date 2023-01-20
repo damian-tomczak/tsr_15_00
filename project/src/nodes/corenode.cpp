@@ -9,39 +9,39 @@ inline QPoint convertQPoint(const QPointF& fPoint)
 
 QString CoreNode::resultString()
 {
-    QString result = nFunctionName;
-    for (int j = 0; j < nOutputPorts.length(); j++)
+    QString result = mFunctionName;
+    for (int j = 0; j < mOutputPorts.length(); j++)
     {
-        for (int k = 0; k < nOutputPorts[j].nNumberBoxes.length(); k++)
+        for (int k = 0; k < mOutputPorts[j].mNumberBoxes.length(); k++)
         {
-            for (int l = 0; l < nNumberBoxes.length(); l++)
+            for (int l = 0; l < mNumberBoxes.length(); l++)
             {
-                result += nNumberBoxes[l].nText + "";
+                result += mNumberBoxes[l].mText + "";
             }
         }
     }
 
-    if (nInputPorts.length() != 0)
+    if (mInputPorts.length() != 0)
     {
         result += "(";
     }
 
-    for (int i = 0; i < nInputPorts.length(); i++)
+    for (int i = 0; i < mInputPorts.length(); i++)
     {
-        Port* port = nInputPorts[i].nTarget;
+        Port* port = mInputPorts[i].mTarget;
         if (port == nullptr)
         {
             continue;
         }
 
-        result += dynamic_cast<CoreNode*>(nInputPorts[i].nTarget->nParent)->resultString();
-        if (i != nInputPorts.length() - 1)
+        result += dynamic_cast<CoreNode*>(mInputPorts[i].mTarget->mParent)->resultString();
+        if (i != mInputPorts.length() - 1)
         {
             result += ",";
         }
     }
 
-    if (nInputPorts.length() != 0)
+    if (mInputPorts.length() != 0)
     {
         result += ")";
     }
@@ -51,48 +51,48 @@ QString CoreNode::resultString()
 
 QColor CoreNode::firstColor() const
 {
-    return nFirstColor;
+    return mFirstColor;
 }
 QColor CoreNode::secondColor() const
 {
-    return nSecondColor;
+    return mSecondColor;
 }
 
 void CoreNode::setTitle(const QString title)
 {
-    if (title == nTitle)
+    if (title == mTitle)
     {
         return;
     }
     else
     {
-        nTitle = title;
+        mTitle = title;
         update();
     }
 }
 
 void CoreNode::setFirstColor(const QColor color)
 {
-    if (color == nFirstColor)
+    if (color == mFirstColor)
     {
         return;
     }
     else
     {
-        nFirstColor = color;
+        mFirstColor = color;
         update();
     }
 }
 
 void CoreNode::setSecondColor(const QColor color)
 {
-    if (color == nSecondColor)
+    if (color == mSecondColor)
     {
         return;
     }
     else
     {
-        nSecondColor = color;
+        mSecondColor = color;
         update();
     }
 }
@@ -102,59 +102,59 @@ void CoreNode::drawBody(QPainter* pPainter)
     int w = static_cast<int>(width());
     int h = static_cast<int>(height());
 
-    pPainter->fillRect(0, 0, w, h, QBrush(nBackgroundColor));
+    pPainter->fillRect(0, 0, w, h, QBrush(mBackgroundColor));
 
-    QLinearGradient g(QPoint(0, 0), QPoint(w, nPanelHeight));
-    g.setColorAt(0, nFirstColor);
-    g.setColorAt(1, nSecondColor);
-    pPainter->fillRect(0, 0, w, nPanelHeight, QBrush(g));
+    QLinearGradient g(QPoint(0, 0), QPoint(w, mPanelHeight));
+    g.setColorAt(0, mFirstColor);
+    g.setColorAt(1, mSecondColor);
+    pPainter->fillRect(0, 0, w, mPanelHeight, QBrush(g));
 
 
-    pPainter->setPen(nHighlightColor);
+    pPainter->setPen(mHighlightColor);
     pPainter->drawRect(1, 1, w - 2, h - 2);
-    pPainter->drawRect(1, 1, w, nPanelHeight - 2);
+    pPainter->drawRect(1, 1, w, mPanelHeight - 2);
 }
 
 void CoreNode::drawTitle(QPainter* pPainter)
 {
-    pPainter->setPen(nTitleColor);
-    pPainter->setFont(nTitleFont);
-    QFontMetrics f(nTitleFont);
-    int x = f.width(nTitle);
+    pPainter->setPen(mTitleColor);
+    pPainter->setFont(mTitleFont);
+    QFontMetrics f(mTitleFont);
+    int x = f.width(mTitle);
     int y = f.height();
-    pPainter->drawText(x / 2, y, nTitle);
+    pPainter->drawText(x / 2, y, mTitle);
 }
 
 void CoreNode::drawPorts(QPainter* pPainter)
 {
     pPainter->setRenderHint(QPainter::RenderHint::Antialiasing, true);
-    for (int i = 0; i < nInputPorts.length(); i++)
+    for (int i = 0; i < mInputPorts.length(); i++)
     {
-        pPainter->setBrush(nInputPorts[i].nColor);
-        int r = static_cast<int>(nInputPorts[i].nRadius);
-        pPainter->drawEllipse(nInputPorts[i].nPosition, r, r);
+        pPainter->setBrush(mInputPorts[i].mColor);
+        int r = static_cast<int>(mInputPorts[i].mRadius);
+        pPainter->drawEllipse(mInputPorts[i].mPosition, r, r);
     }
-    for (int i = 0; i < nOutputPorts.length(); i++)
+    for (int i = 0; i < mOutputPorts.length(); i++)
     {
-        pPainter->setBrush(nOutputPorts[i].nColor);
-        int r = static_cast<int>(nOutputPorts[i].nRadius);
-        pPainter->drawEllipse(nOutputPorts[i].nPosition, r, r);
+        pPainter->setBrush(mOutputPorts[i].mColor);
+        int r = static_cast<int>(mOutputPorts[i].mRadius);
+        pPainter->drawEllipse(mOutputPorts[i].mPosition, r, r);
     }
 }
 
 void CoreNode::drawLabels(QPainter* pPainter)
 {
-    for (int i = 0; i < nLabels.length(); i++)
+    for (int i = 0; i < mLabels.length(); i++)
     {
-        nLabels[i].drawBody(pPainter);
+        mLabels[i].drawBody(pPainter);
     }
 }
 
 void CoreNode::drawNumberBoxes(QPainter* pPainter)
 {
-    for (int i = 0; i < nNumberBoxes.length(); i++)
+    for (int i = 0; i < mNumberBoxes.length(); i++)
     {
-        nNumberBoxes[i].drawBody(pPainter, npCurrentNumberBox);
+        mNumberBoxes[i].drawBody(pPainter, mpCurrentNumberBox);
     }
 }
 
@@ -169,10 +169,10 @@ void CoreNode::paint(QPainter* pPainter)
 
 void CoreNode::mouseMoveEvent(QMouseEvent* pEvent)
 {
-    if (nIsMouseClickedOnHeader)
+    if (mIsMouseClickedOnHeader)
     {
         QPoint curr = QPoint(static_cast<int>(position().x()), static_cast<int>(position().y()));
-        QPoint l = curr - nLastMousePosition + pEvent->pos();
+        QPoint l = curr - mLastMousePosition + pEvent->pos();
         setPosition(l);
     }
     portLineMoveHelper(pEvent->pos());
@@ -181,10 +181,10 @@ void CoreNode::mouseMoveEvent(QMouseEvent* pEvent)
 void CoreNode::mousePressEvent(QMouseEvent* pEvent)
 {
     setFocus(true);
-    nLastMousePosition = pEvent->pos();
+    mLastMousePosition = pEvent->pos();
     if (isMouseOnHeader(pEvent->pos()))
     {
-        nIsMouseClickedOnHeader = true;
+        mIsMouseClickedOnHeader = true;
     }
     else
     {
@@ -195,7 +195,7 @@ void CoreNode::mousePressEvent(QMouseEvent* pEvent)
 
 void CoreNode::mouseReleaseEvent(QMouseEvent* pEvent)
 {
-    nIsMouseClickedOnHeader = false;
+    mIsMouseClickedOnHeader = false;
     releasePortTargeter(pEvent->pos());
 }
 
@@ -203,16 +203,16 @@ void CoreNode::focusOutEvent(QFocusEvent* pEvent)
 {
     if (pEvent->lostFocus())
     {
-        npCurrentNumberBox = nullptr;
+        mpCurrentNumberBox = nullptr;
         update();
     }
 }
 
 void CoreNode::keyPressEvent(QKeyEvent* pEvent)
 {
-    if (npCurrentNumberBox != nullptr)
+    if (mpCurrentNumberBox != nullptr)
     {
-        npCurrentNumberBox->keyPress(pEvent);
+        mpCurrentNumberBox->keyPress(pEvent);
         update();
     }
     if (pEvent->key() == Qt::Key::Key_Delete)
@@ -241,20 +241,20 @@ void CoreNode::portClickHelper(const QPoint& point)
     {
         Board* pBoard = dynamic_cast<Board*>(parent());
         pBoard->mIsDrawCurrentLine = true;
-        pBoard->mCurrentPortType = pPort->nType;
-        pBoard->mCurrentLineColor = pPort->nColor;
+        pBoard->mCurrentPortType = pPort->mType;
+        pBoard->mCurrentLineColor = pPort->mColor;
         pBoard->mFromCurrentLine = pPort->getWorldPosition();
         pBoard->mToCurrentLine = point + convertQPoint(position());
-        if (pPort->nType == Port::PortType::INPUT)
+        if (pPort->mType == Port::PortType::INPUT)
         {
-            nIsInputPortClicked = true;
+            mIsInputPortClicked = true;
 
         }
         else
         {
-            nIsOutPutPortClicked = true;
+            mIsOutPutPortClicked = true;
         }
-        nCurrentPort = pPort;
+        mCurrentPort = pPort;
     }
 }
 
@@ -263,11 +263,11 @@ void CoreNode::numberBoxClickHelper(const QPoint& point)
     NumberBox* pNumberBox = getClickedNumberBox(point);
     if (pNumberBox != nullptr)
     {
-        npCurrentNumberBox = pNumberBox;
+        mpCurrentNumberBox = pNumberBox;
     }
     else
     {
-        npCurrentNumberBox = nullptr;
+        mpCurrentNumberBox = nullptr;
 
     }
     update();
@@ -277,13 +277,13 @@ NumberBox* CoreNode::getClickedNumberBox(const QPoint& point)
 {
     NumberBox* pPort{};
 
-    for (int i = 0; i < nNumberBoxes.length(); i++)
+    for (int i = 0; i < mNumberBoxes.length(); i++)
     {
-        if (abs(point.x() - nNumberBoxes[i].nPosition.x()) <= nNumberBoxes[i].nWidth)
+        if (abs(point.x() - mNumberBoxes[i].mPosition.x()) <= mNumberBoxes[i].mWidth)
         {
-            if (abs(point.y() - nNumberBoxes[i].nPosition.y()) <= nNumberBoxes[i].nHeight)
+            if (abs(point.y() - mNumberBoxes[i].mPosition.y()) <= mNumberBoxes[i].mHeight)
             {
-                pPort = &nNumberBoxes[i];
+                pPort = &mNumberBoxes[i];
             }
         }
     }
@@ -294,23 +294,23 @@ Port* CoreNode::getClickedPort(const QPoint& point)
 {
     Port* pPort{};
 
-    for (int i = 0; i < nOutputPorts.length(); i++)
+    for (int i = 0; i < mOutputPorts.length(); i++)
     {
-        if (abs(point.x() - nOutputPorts[i].nPosition.x()) <= nOutputPorts[i].nRadius)
+        if (abs(point.x() - mOutputPorts[i].mPosition.x()) <= mOutputPorts[i].mRadius)
         {
-            if (abs(point.y() - nOutputPorts[i].nPosition.y()) <= nOutputPorts[i].nRadius)
+            if (abs(point.y() - mOutputPorts[i].mPosition.y()) <= mOutputPorts[i].mRadius)
             {
-                pPort = &nOutputPorts[i];
+                pPort = &mOutputPorts[i];
             }
         }
     }
-    for (int i = 0; i < nInputPorts.length(); i++)
+    for (int i = 0; i < mInputPorts.length(); i++)
     {
-        if (abs(point.x() - nInputPorts[i].nPosition.x()) <= nInputPorts[i].nRadius)
+        if (abs(point.x() - mInputPorts[i].mPosition.x()) <= mInputPorts[i].mRadius)
         {
-            if (abs(point.y() - nInputPorts[i].nPosition.y()) <= nInputPorts[i].nRadius)
+            if (abs(point.y() - mInputPorts[i].mPosition.y()) <= mInputPorts[i].mRadius)
             {
-                pPort = &nInputPorts[i];
+                pPort = &mInputPorts[i];
             }
         }
     }
@@ -319,11 +319,11 @@ Port* CoreNode::getClickedPort(const QPoint& point)
 
 void CoreNode::portLineMoveHelper(const QPoint& point)
 {
-    if (nIsInputPortClicked || nIsOutPutPortClicked)
+    if (mIsInputPortClicked || mIsOutPutPortClicked)
     {
         Board* pBoard = dynamic_cast<Board*>(parent());
         pBoard->mToCurrentLine = point + convertQPoint(position());
-        pBoard->mFromCurrentLine = nCurrentPort->getWorldPosition();
+        pBoard->mFromCurrentLine = mCurrentPort->getWorldPosition();
     }
     dynamic_cast<QQuickItem*>(parent())->update();
 }
@@ -333,16 +333,16 @@ void CoreNode::releasePortTargeter(const QPoint& point)
     Board* pBoard = dynamic_cast<Board*>(parent());
     pBoard->mIsDrawCurrentLine = false;
     pBoard->update();
-    if (nIsInputPortClicked)
+    if (mIsInputPortClicked)
     {
-        nIsInputPortClicked = false;
+        mIsInputPortClicked = false;
         Port* pPort{};
         pPort = pPort->getPortNearestAtPosition(point + convertQPoint(position()), parent(), this);
         if (pPort != nullptr)
         {
-            if (pPort->nType == Port::PortType::OUTPUT)
+            if (pPort->mType == Port::PortType::OUTPUT)
             {
-                bindPort(pPort, nCurrentPort);
+                bindPort(pPort, mCurrentPort);
             }
         }
         else
@@ -350,16 +350,16 @@ void CoreNode::releasePortTargeter(const QPoint& point)
             connectionRemover();
         }
     }
-    if (nIsOutPutPortClicked)
+    if (mIsOutPutPortClicked)
     {
-        nIsOutPutPortClicked = false;
+        mIsOutPutPortClicked = false;
         Port* pPort{};
         pPort = pPort->getPortNearestAtPosition(point + convertQPoint(position()), parent(), this);
         if (pPort != nullptr)
         {
-            if (pPort->nType == Port::PortType::INPUT)
+            if (pPort->mType == Port::PortType::INPUT)
             {
-                bindPort(nCurrentPort, pPort);
+                bindPort(mCurrentPort, pPort);
             }
         }
         else
@@ -367,30 +367,30 @@ void CoreNode::releasePortTargeter(const QPoint& point)
             connectionRemover();
         }
     }
-    nCurrentPort = nullptr;
+    mCurrentPort = nullptr;
 }
 
 void CoreNode::connectionRemover()
 {
-    if (nCurrentPort == nullptr)
+    if (mCurrentPort == nullptr)
     {
         return;
     }
-    if (nCurrentPort->nType == Port::PortType::INPUT)
+    if (mCurrentPort->mType == Port::PortType::INPUT)
     {
-        nCurrentPort->nTarget = nullptr;
+        mCurrentPort->mTarget = nullptr;
     }
     else
     {
-        if (nCurrentPort->nInput != nullptr)
+        if (mCurrentPort->mInput != nullptr)
         {
-            nCurrentPort->nInput->nTarget = nullptr;
+            mCurrentPort->mInput->mTarget = nullptr;
         }
     }
 }
 
 void CoreNode::bindPort(Port* pPort1, Port* pPort2)
 {
-    pPort2->nTarget = pPort1;
-    pPort1->nInput = pPort2;
+    pPort2->mTarget = pPort1;
+    pPort1->mInput = pPort2;
 }

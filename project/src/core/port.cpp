@@ -3,7 +3,7 @@
 
 QPoint Port::getWorldPosition()
 {
-	return nPosition + QPoint(static_cast<int>(nParent->position().x()), static_cast<int>(nParent->position().y()));
+	return mPosition + QPoint(static_cast<int>(mParent->position().x()), static_cast<int>(mParent->position().y()));
 }
 
 Port* Port::getPortNearestAtPosition(QPoint point, QObject* pParent, QQuickItem* pCurrentNode)
@@ -15,23 +15,23 @@ Port* Port::getPortNearestAtPosition(QPoint point, QObject* pParent, QQuickItem*
         CoreNode* pNode = dynamic_cast<CoreNode*>(children[i]);
         if (pNode != dynamic_cast<CoreNode*>(pCurrentNode) && pNode != nullptr)
         {
-            for (int j = 0; j < pNode->nInputPorts.length(); j++)
+            for (int j = 0; j < pNode->mInputPorts.length(); j++)
             {
-                if (abs(point.x() - pNode->nInputPorts[j].getWorldPosition().x()) <= pNode->nInputPorts[j].nRadius)
+                if (abs(point.x() - pNode->mInputPorts[j].getWorldPosition().x()) <= pNode->mInputPorts[j].mRadius)
                 {
-                    if (abs(point.y() - pNode->nInputPorts[j].getWorldPosition().y()) <= pNode->nInputPorts[j].nRadius)
+                    if (abs(point.y() - pNode->mInputPorts[j].getWorldPosition().y()) <= pNode->mInputPorts[j].mRadius)
                     {
-                        pPort = &pNode->nInputPorts[j];
+                        pPort = &pNode->mInputPorts[j];
                     }
                 }
             }
-            for (int j = 0; j < pNode->nOutputPorts.length(); j++)
+            for (int j = 0; j < pNode->mOutputPorts.length(); j++)
             {
-                if (abs(point.x() - pNode->nOutputPorts[j].getWorldPosition().x()) <= pNode->nOutputPorts[j].nRadius)
+                if (abs(point.x() - pNode->mOutputPorts[j].getWorldPosition().x()) <= pNode->mOutputPorts[j].mRadius)
                 {
-                    if (abs(point.y() - pNode->nOutputPorts[j].getWorldPosition().y()) <= pNode->nOutputPorts[j].nRadius)
+                    if (abs(point.y() - pNode->mOutputPorts[j].getWorldPosition().y()) <= pNode->mOutputPorts[j].mRadius)
                     {
-                        pPort = &pNode->nOutputPorts[j];
+                        pPort = &pNode->mOutputPorts[j];
                     }
                 }
             }
