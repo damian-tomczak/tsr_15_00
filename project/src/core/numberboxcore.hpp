@@ -7,44 +7,44 @@
 
 struct NumberBox
 {
-    int mWidth{ 100 };
-    int mHeight{ 26 };
-    QString mText{"0"};
-    QFont mFont{ "Segoe UI", 12, -1, true };
-    QPoint mPosition;
-    QColor mBorderColor{ Qt::black };
-    QColor mHighlightColor{ 34, 141, 255 };
-    QColor mBackgroundColor{ 60, 60, 60 };
-    QColor mForeGroundColor{ Qt::white };
-    int mCursorPos{ 1 };
+    int nWidth{ 100 };
+    int nHeight{ 26 };
+    QString nText{"0"};
+    QFont nFont{ "Segoe UI", 12, -1, true };
+    QPoint nPosition;
+    QColor nBorderColor{ Qt::black };
+    QColor nHighlightColor{ 34, 141, 255 };
+    QColor nBackgroundColor{ 60, 60, 60 };
+    QColor nForeGroundColor{ Qt::white };
+    int nCursorPos{ 1 };
     int MaxCharacters{ 8 };
 
     void drawBody(QPainter* painter, NumberBox* currentNumberBox)
     {
-        painter->setPen(mBorderColor);
-        painter->drawRect(mPosition.x(), mPosition.y(), mWidth, mHeight);
-        QColor bcol = currentNumberBox == nullptr ? mBackgroundColor : mHighlightColor;
-        painter->fillRect(mPosition.x(), mPosition.y(), mWidth, mHeight, bcol);
+        painter->setPen(nBorderColor);
+        painter->drawRect(nPosition.x(), nPosition.y(), nWidth, nHeight);
+        QColor bcol = currentNumberBox == nullptr ? nBackgroundColor : nHighlightColor;
+        painter->fillRect(nPosition.x(), nPosition.y(), nWidth, nHeight, bcol);
 
-        QFontMetrics f(mFont);
-        f.width(mText);
+        QFontMetrics f(nFont);
+        f.width(nText);
         int y = f.height();
-        painter->setPen(mForeGroundColor);
-        painter->setFont(mFont);
-        QString text = mText;
+        painter->setPen(nForeGroundColor);
+        painter->setFont(nFont);
+        QString text = nText;
 
         if (currentNumberBox != nullptr)
         {
-            text.insert(mCursorPos, '|');
+            text.insert(nCursorPos, '|');
         }
 
-        if (mText.length() > MaxCharacters)
+        if (nText.length() > MaxCharacters)
         {
-            mCursorPos = mText.length();
+            nCursorPos = nText.length();
             text.resize(MaxCharacters - 3);
             text += "..";
         }
-        QPoint p = mPosition + QPoint(5, 2 * y / 3);
+        QPoint p = nPosition + QPoint(5, 2 * y / 3);
         painter->drawText(p, text);
     }
 
@@ -52,40 +52,40 @@ struct NumberBox
     {
         if (event->key() == Qt::Key::Key_Backspace)
         {
-            if (mCursorPos > 0)
+            if (nCursorPos > 0)
             {
-                mText.remove(mCursorPos - 1, 1);
-                mCursorPos--;
+                nText.remove(nCursorPos - 1, 1);
+                nCursorPos--;
             }
         }
         if (event->key() == Qt::Key::Key_Left)
         {
-            if (mCursorPos > 0)
+            if (nCursorPos > 0)
             {
-                mCursorPos--;
+                nCursorPos--;
             }
         }
         if (event->key() == Qt::Key::Key_Right)
         {
-            if (mCursorPos < mText.length())
+            if (nCursorPos < nText.length())
             {
-                mCursorPos++;
+                nCursorPos++;
             }
         }
         if ((event->key() >= 48 && event->key() <= 57) || event->key() == 46)
         {
-            mText.insert(mCursorPos, static_cast<QChar>(event->key()));
-            mCursorPos++;
+            nText.insert(nCursorPos, static_cast<QChar>(event->key()));
+            nCursorPos++;
         }
         if (event->key() == Qt::Key::Key_Plus)
         {
-            mText.insert(mCursorPos, '+');
-            mCursorPos++;
+            nText.insert(nCursorPos, '+');
+            nCursorPos++;
         }
         if (event->key() == Qt::Key::Key_Minus)
         {
-            mText.insert(mCursorPos, '-');
-            mCursorPos++;
+            nText.insert(nCursorPos, '-');
+            nCursorPos++;
         }
     }
 };

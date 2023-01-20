@@ -13,15 +13,15 @@ struct Port
         OUTPUT
     };
 
-    QQuickItem* mParent{};
-    Port* mTarget{};
-    Port* mInput{};
-    PortType mType{ PortType::INPUT };
-    QColor mColor{ Qt::green };
-    QPoint mPosition;
-    float mRadius{ 10.f };
+    QQuickItem* nParent{};
+    Port* nTarget{};
+    Port* nInput{};
+    PortType nType{ PortType::INPUT };
+    QColor nColor{ Qt::green };
+    QPoint nPosition;
+    float nRadius{ 10.f };
 
-    QList<NumberBox> mNumberBoxes;
+    QList<NumberBox> nNumberBoxes;
 
     QPoint getWorldPosition();
     Port* getPortNearestAtPosition(QPoint point, QObject* pParent, QQuickItem* pCurrentNode);

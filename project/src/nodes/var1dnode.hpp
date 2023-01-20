@@ -15,22 +15,22 @@ public:
 
         Port p
         {
-            .mParent = this,
-            .mType = Port::PortType::OUTPUT,
-            .mColor = firstColor(),
-            .mPosition = QPoint(125, 75),
+            .nParent = this,
+            .nType = Port::PortType::OUTPUT,
+            .nColor = firstColor(),
+            .nPosition = QPoint(125, 75),
         };
 
         NumberBox n
         {
-            .mPosition = QPoint(12, 62)
+            .nPosition = QPoint(12, 62)
         };
 
-        mNumberBoxes.push_back(std::move(n));
+        nNumberBoxes.push_back(std::move(n));
 
-        p.mNumberBoxes.push_back(std::move(n));
+        p.nNumberBoxes.push_back(std::move(n));
 
-        mOutputPorts.push_back(std::move(p));
+        nOutputPorts.push_back(std::move(p));
     }
 
 };

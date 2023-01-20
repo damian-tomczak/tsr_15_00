@@ -15,11 +15,11 @@ public:
 
         Port p
         {
-            .mParent = this,
-            .mColor = secondColor(),
-            .mPosition = QPoint(20, 70),
+            .nParent = this,
+            .nColor = secondColor(),
+            .nPosition = QPoint(20, 70),
         };
-        mInputPorts.push_back(std::move(p));
+        nInputPorts.push_back(std::move(p));
     }
 
 };

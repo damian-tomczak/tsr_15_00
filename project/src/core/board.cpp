@@ -162,14 +162,14 @@ void Board::drawConnectors(QPainter* painter)
         if (pNode != nullptr)
         {
 
-            for (int j = 0; j < pNode->mInputPorts.length(); j++)
+            for (int j = 0; j < pNode->nInputPorts.length(); j++)
             {
-                if (pNode->mInputPorts[j].mTarget != nullptr)
+                if (pNode->nInputPorts[j].nTarget != nullptr)
                 {
-                    QPoint p1 = pNode->mInputPorts[j].mTarget->getWorldPosition();
-                    QPoint p2 = pNode->mInputPorts[j].getWorldPosition();
+                    QPoint p1 = pNode->nInputPorts[j].nTarget->getWorldPosition();
+                    QPoint p2 = pNode->nInputPorts[j].getWorldPosition();
 
-                    painter->setPen(QPen(pNode->mInputPorts[j].mColor, 5));
+                    painter->setPen(QPen(pNode->nInputPorts[j].nColor, 5));
                     painter->drawLine(p1.x(), p1.y(), p1.x() + 40, p1.y());
                     painter->drawLine(p1.x() + 40, p1.y(), p2.x() - 40, p2.y());
                     painter->drawLine(p2.x() - 40, p2.y(), p2.x(), p2.y());
