@@ -13,7 +13,7 @@ public:
         setFirstColor(QColor(Qt::green));
         setSecondColor(QColor(10, 160, 45));
 
-        Port p
+        Port port
         {
             .mParent = this,
             .mType = Port::PortType::OUTPUT,
@@ -21,16 +21,16 @@ public:
             .mPosition = QPoint(125, 75),
         };
 
-        NumberBox n
+        NumberBox box
         {
             .mPosition = QPoint(12, 62)
         };
 
-        mNumberBoxes.push_back(std::move(n));
+        mNumberBoxes.push_back(std::move(box));
 
-        p.mNumberBoxes.push_back(std::move(n));
+        port.mNumberBoxes.push_back(std::move(box));
 
-        mOutputPorts.push_back(std::move(p));
+        mOutputPorts.push_back(std::move(port));
     }
 
 };

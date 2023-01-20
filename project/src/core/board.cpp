@@ -18,9 +18,9 @@ void Board::drawGridLines(QPainter* painter)
     int h = static_cast<int>(this->height());
 
     painter->fillRect(0, 0, w, h, QBrush(mBackgroundColor));
-
-    int vertLines = w / mSquareDimension + 1;
+    
     int horizLines = h / mSquareDimension + 1;
+    int vertLines = w / mSquareDimension + 1;
 
     painter->drawRect(0, 0, w, h);
 
@@ -35,7 +35,8 @@ void Board::drawGridLines(QPainter* painter)
             painter->setPen(QPen(mSmallLineColor, 1));
         }
 
-        painter->drawLine(i * mSquareDimension, 0,
+        painter->drawLine(i * mSquareDimension, 
+            0,
             i * mSquareDimension,
             h);
     }
@@ -51,8 +52,10 @@ void Board::drawGridLines(QPainter* painter)
             painter->setPen(QPen(mSmallLineColor, 1));
         }
 
-        painter->drawLine(0, i * mSquareDimension,
-            w, i * mSquareDimension);
+        painter->drawLine(0, 
+            i * mSquareDimension,
+            w, 
+            i * mSquareDimension);
     }
 }
 
@@ -131,24 +134,23 @@ void Board::drawCurrentLines(QPainter* pPainter)
     {
         if (mCurrentPortType == Port::PortType::OUTPUT)
         {
-            QPoint p1 = mFromCurrentLine;
-            QPoint p2 = mToCurrentLine;
+            QPoint port1 = mFromCurrentLine;
+            QPoint port2 = mToCurrentLine;
 
             pPainter->setPen(QPen(mCurrentLineColor, 5));
-            pPainter->drawLine(p1.x(), p1.y(), p1.x() + 40, p1.y());
-            pPainter->drawLine(p1.x() + 40, p1.y(), p2.x() - 40, p2.y());
-            pPainter->drawLine(p2.x() - 40, p2.y(), p2.x(), p2.y());
-
+            pPainter->drawLine(port1.x(), port1.y(), port1.x() + 40, port1.y());
+            pPainter->drawLine(port1.x() + 40, port1.y(), port2.x() - 40, port2.y());
+            pPainter->drawLine(port2.x() - 40, port2.y(), port2.x(), port2.y());
         }
         else
         {
-            QPoint p1 = mFromCurrentLine;
-            QPoint p2 = mToCurrentLine;
+            QPoint port1 = mFromCurrentLine;
+            QPoint port2 = mToCurrentLine;
 
             pPainter->setPen(QPen(mCurrentLineColor, 5));
-            pPainter->drawLine(p1.x(), p1.y(), p1.x() - 40, p1.y());
-            pPainter->drawLine(p1.x() - 40, p1.y(), p2.x() + 40, p2.y());
-            pPainter->drawLine(p2.x() + 40, p2.y(), p2.x(), p2.y());
+            pPainter->drawLine(port1.x(), port1.y(), port1.x() - 40, port1.y());
+            pPainter->drawLine(port1.x() - 40, port1.y(), port2.x() + 40, port2.y());
+            pPainter->drawLine(port2.x() + 40, port2.y(), port2.x(), port2.y());
         }
     }
 }
@@ -166,13 +168,13 @@ void Board::drawConnectors(QPainter* painter)
             {
                 if (pNode->mInputPorts[j].mTarget != nullptr)
                 {
-                    QPoint p1 = pNode->mInputPorts[j].mTarget->getWorldPosition();
-                    QPoint p2 = pNode->mInputPorts[j].getWorldPosition();
+                    QPoint port1 = pNode->mInputPorts[j].mTarget->getWorldPosition();
+                    QPoint port2 = pNode->mInputPorts[j].getWorldPosition();
 
                     painter->setPen(QPen(pNode->mInputPorts[j].mColor, 5));
-                    painter->drawLine(p1.x(), p1.y(), p1.x() + 40, p1.y());
-                    painter->drawLine(p1.x() + 40, p1.y(), p2.x() - 40, p2.y());
-                    painter->drawLine(p2.x() - 40, p2.y(), p2.x(), p2.y());
+                    painter->drawLine(port1.x(), port1.y(), port1.x() + 40, port1.y());
+                    painter->drawLine(port1.x() + 40, port1.y(), port2.x() - 40, port2.y());
+                    painter->drawLine(port2.x() - 40, port2.y(), port2.x(), port2.y());
                 }
             }
         }
