@@ -6,19 +6,11 @@ import QtQuick.Layouts 1.0
 import cursor 1.0
 import noderesults 1.0
 import board 1.0
+import varnode 1.0
+import printnode 1.0;
+import "Database.js" as JS
 
-Window {
-    id: window
-    visible: true
-    width: 1280
-    height: 720
-    title: "Block-Based Programming Language"
-
-    Cursor
-    {
-        id: curs
-    }
-
+Page {
     ToolBar {
         id: toolBar
         height: 49
@@ -28,9 +20,21 @@ Window {
         anchors.leftMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
-        Button {
-            text: "HELP"
-            onClicked: help.open()
+
+        RowLayout {
+             Button {
+                text: "HOME"
+                onClicked: stackView.pop()
+            }
+            Button {
+                text: "HELP"
+                onClicked: help.open()
+            }
+            Text {
+                id: goal
+                color: "white"
+                text: "Your goal: " + JS.getGoal("Modulo.qml")
+            }
         }
 
         Dialog {
@@ -55,10 +59,6 @@ Window {
         }
 
         Button {
-            x: 514
-            y: -1
-            width: 118
-            height: 50
             text: "RUN"
             anchors.right: parent.right
             anchors.rightMargin: 8
@@ -105,7 +105,7 @@ Window {
                 x: 8
                 y: 8
                 color: "#deffffff"
-                text: qsTr("Console")
+                text: "Console"
                 font.pointSize: 12
                 font.italic: false
                 font.bold: true
@@ -117,7 +117,7 @@ Window {
             y: 34
             height: 93
             color: "#fdfdfd"
-            text: qsTr("Here you will see the result of work")
+            text: "Here you will see the result of work"
             font.italic: false
             font.bold: false
             anchors.bottom: parent.bottom
@@ -149,82 +149,96 @@ Window {
             onRightClickedChanged: if(board.rightClicked) contextMenu.popup()
             Result {
                 id: calc
+                correctAnswer: JS.getGoal("Modulo.qml")
+                onCorrectAnswer: {
+                    success.open()
+                }
+            }
+
+            VarNode {
+                x: 100
+                y: 50
+                destructible: false
+                editable: false
+                value: "1"
+            }
+
+            VarNode {
+                x: 100
+                y: 250
+                destructible: false
+                editable: false
+                value: "5"
+            }
+
+            PrintNode {
+                x: 1000
+                y: 150
+            }
+
+            Dialog {
+                id: success
+                title: "Success"
+                x: (window.width - width) / 2
+                y: (window.height - height) / 2
+                parent: ApplicationWindow.overlay
+                standardButtons: StandardButton.Ok
+                onAccepted: {
+                    JS.completeTask("Modulo.qml")
+                    stackView.push("Tasks.qml")
+                }
+                Text {
+                    text: "You have completed the task!"
+                }
             }
 
             Menu {
                 id: contextMenu
                 cascade: true
                 Menu {
-                    title: "Input"
+                    title: "Math"
                     MenuItem {
-                        text: "1D Var"
+                        text: "Add"
                         onClicked: {
-                            var newObject = Qt.createQmlObject('import var1dnode 1.0;
-                                    Var1DNode {x:'+curs.getCursor(window.x,window.y).x+'
-                                         y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
+                            Qt.createQmlObject('import addnode 1.0;
+                                AddNode {x:'+curs.getCursor(window.x,window.y).x+'
+                                        y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
                         }
                     }
 
-                }
-
-                Menu
-                {
-                    title: "Math"
-                        MenuItem {
-                            text: "Add"
-                            onClicked: {
-                                var newObject = Qt.createQmlObject('import addnode 1.0;
-                                    AddNode {x:'+curs.getCursor(window.x,window.y).x+'
-                                         y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
-                            }
+                    MenuItem {
+                        text: "Subtract"
+                        onClicked: {
+                            Qt.createQmlObject('import subtractnode 1.0;
+                                SubtractNode {x:'+curs.getCursor(window.x,window.y).x+'
+                                        y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
                         }
-
-                        MenuItem {
-                            text: "Subtract"
-                            onClicked: {
-                                var newObject = Qt.createQmlObject('import subtractnode 1.0;
-                                    SubtractNode {x:'+curs.getCursor(window.x,window.y).x+'
-                                         y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
-                            }
-                        }
-
-                        MenuItem {
-                            text: "Multiply"
-                            onClicked: {
-                                var newObject = Qt.createQmlObject('import multiplynode 1.0;
-                                    MultiplyNode {x:'+curs.getCursor(window.x,window.y).x+'
-                                         y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
-                            }
-                        }
-
-                        MenuItem {
-                            text: "Divide"
-                            onClicked: {
-                                var newObject = Qt.createQmlObject('import dividenode 1.0;
-                                    DivideNode {x:'+curs.getCursor(window.x,window.y).x+'
-                                         y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
-                            }
-                        }
-
-                        MenuItem {
-                            text: "Modulo"
-                            onClicked: {
-                                var newObject = Qt.createQmlObject('import modulonode 1.0;
-                                    ModuloNode {x:'+curs.getCursor(window.x,window.y).x+'
-                                         y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
-                            }
-                        }
-                }
-
-                Menu {
-                    title: "Output"
+                    }
 
                     MenuItem {
-                        text:"Print"
+                        text: "Multiply"
                         onClicked: {
-                            var newObject = Qt.createQmlObject('import printnode 1.0;
-                                    PrintNode {x:'+curs.getCursor(window.x,window.y).x+'
-                                         y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
+                            Qt.createQmlObject('import multiplynode 1.0;
+                                MultiplyNode {x:'+curs.getCursor(window.x,window.y).x+'
+                                        y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
+                        }
+                    }
+
+                    MenuItem {
+                        text: "Divide"
+                        onClicked: {
+                            Qt.createQmlObject('import dividenode 1.0;
+                                DivideNode {x:'+curs.getCursor(window.x,window.y).x+'
+                                        y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
+                        }
+                    }
+
+                    MenuItem {
+                        text: "Modulo"
+                        onClicked: {
+                            Qt.createQmlObject('import modulonode 1.0;
+                                ModuloNode {x:'+curs.getCursor(window.x,window.y).x+'
+                                        y:'+curs.getCursor(window.x,window.y).y+' }', board, "board");
                         }
                     }
                 }

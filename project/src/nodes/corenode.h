@@ -2,7 +2,7 @@
 
 #include <QQuickPaintedItem>
 
-#include "core/numberboxcore.hpp"
+#include "core/numberbox.hpp"
 #include "core/port.h"
 #include "core/label.hpp"
 #include "core/board.h"
@@ -10,9 +10,12 @@
 class CoreNode : public QQuickPaintedItem
 {
     Q_OBJECT
+        Q_PROPERTY(bool destructible READ getDestructible WRITE setDestructible)
+        Q_PROPERTY(bool editable READ getEditable WRITE setEditable)
 
 public:
     CoreNode(const char* functionName) : mFunctionName(functionName) { setAcceptedMouseButtons(Qt::AllButtons); }
+
     QList<Port> mInputPorts;
     QList<Port> mOutputPorts;
     QList<NumberBox> mNumberBoxes;
@@ -21,14 +24,18 @@ public:
 
     QString resultString();
 
-    QColor firstColor() const;
-    QColor secondColor() const;
+    QColor firstColor() const { return mFirstColor; }
+    QColor secondColor() const { return mSecondColor; }
     int panelHeight() const { return mPanelHeight; }
 
 public slots:
-    void setTitle(const QString title);
-    void setFirstColor(const QColor color);
-    void setSecondColor(const QColor color);
+    void setTitle(const QString title) { mTitle = title; update(); };
+    void setFirstColor(const QColor color) { mFirstColor = color; update(); };
+    void setSecondColor(const QColor color) { mSecondColor = color; update(); };
+    void setDestructible(const bool condition) { mIsDestructible = condition; }
+    bool getDestructible() const { return mIsDestructible; }
+    void setEditable(const bool condition) { mIsEditable = condition; }
+    bool getEditable() const { return mIsEditable; }
 
 protected:
     void paint(QPainter* pPainter) override;
@@ -55,6 +62,8 @@ private:
     bool mIsMouseClickedOnHeader{};
     bool mIsOutPutPortClicked{};
     bool mIsInputPortClicked{};
+    bool mIsDestructible{ true };
+    bool mIsEditable{ true };
 
     void drawBody(QPainter* pPainter);
     void drawTitle(QPainter* pPainter);
@@ -71,5 +80,5 @@ private:
     void portLineMoveHelper(const QPoint& point);
     void releasePortTargeter(const QPoint& point);
     void connectionRemover();
-    void bindPort(Port* pPort1, Port* pPort2);
+    void bindPort(Port* pPort1, Port* pPort2) { pPort2->mTarget = pPort1; pPort1->mInput = pPort2; }
 };

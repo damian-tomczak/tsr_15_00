@@ -10,11 +10,11 @@ inline QPoint convertQPoint(const QPointF& fPoint)
 QString CoreNode::resultString()
 {
     QString result = mFunctionName;
-    for (int j = 0; j < mOutputPorts.length(); j++)
+    for (int j{}; j < mOutputPorts.length(); j++)
     {
-        for (int k = 0; k < mOutputPorts[j].mNumberBoxes.length(); k++)
+        for (int k{}; k < mOutputPorts[j].mNumberBoxes.length(); k++)
         {
-            for (int l = 0; l < mNumberBoxes.length(); l++)
+            for (int l{}; l < mNumberBoxes.length(); l++)
             {
                 result += mNumberBoxes[l].mText + "";
             }
@@ -26,7 +26,7 @@ QString CoreNode::resultString()
         result += "(";
     }
 
-    for (int i = 0; i < mInputPorts.length(); i++)
+    for (int i{}; i < mInputPorts.length(); i++)
     {
         Port* port = mInputPorts[i].mTarget;
         if (port == nullptr)
@@ -47,54 +47,6 @@ QString CoreNode::resultString()
     }
 
     return result;
-}
-
-QColor CoreNode::firstColor() const
-{
-    return mFirstColor;
-}
-QColor CoreNode::secondColor() const
-{
-    return mSecondColor;
-}
-
-void CoreNode::setTitle(const QString title)
-{
-    if (title == mTitle)
-    {
-        return;
-    }
-    else
-    {
-        mTitle = title;
-        update();
-    }
-}
-
-void CoreNode::setFirstColor(const QColor color)
-{
-    if (color == mFirstColor)
-    {
-        return;
-    }
-    else
-    {
-        mFirstColor = color;
-        update();
-    }
-}
-
-void CoreNode::setSecondColor(const QColor color)
-{
-    if (color == mSecondColor)
-    {
-        return;
-    }
-    else
-    {
-        mSecondColor = color;
-        update();
-    }
 }
 
 void CoreNode::drawBody(QPainter* pPainter)
@@ -128,13 +80,13 @@ void CoreNode::drawTitle(QPainter* pPainter)
 void CoreNode::drawPorts(QPainter* pPainter)
 {
     pPainter->setRenderHint(QPainter::RenderHint::Antialiasing, true);
-    for (int i = 0; i < mInputPorts.length(); i++)
+    for (int i{}; i < mInputPorts.length(); i++)
     {
         pPainter->setBrush(mInputPorts[i].mColor);
         int r = static_cast<int>(mInputPorts[i].mRadius);
         pPainter->drawEllipse(mInputPorts[i].mPosition, r, r);
     }
-    for (int i = 0; i < mOutputPorts.length(); i++)
+    for (int i{}; i < mOutputPorts.length(); i++)
     {
         pPainter->setBrush(mOutputPorts[i].mColor);
         int r = static_cast<int>(mOutputPorts[i].mRadius);
@@ -144,7 +96,7 @@ void CoreNode::drawPorts(QPainter* pPainter)
 
 void CoreNode::drawLabels(QPainter* pPainter)
 {
-    for (int i = 0; i < mLabels.length(); i++)
+    for (int i{}; i < mLabels.length(); i++)
     {
         mLabels[i].drawBody(pPainter);
     }
@@ -152,7 +104,7 @@ void CoreNode::drawLabels(QPainter* pPainter)
 
 void CoreNode::drawNumberBoxes(QPainter* pPainter)
 {
-    for (int i = 0; i < mNumberBoxes.length(); i++)
+    for (int i{}; i < mNumberBoxes.length(); i++)
     {
         mNumberBoxes[i].drawBody(pPainter, mpCurrentNumberBox);
     }
@@ -180,7 +132,7 @@ void CoreNode::mouseMoveEvent(QMouseEvent* pEvent)
 
 void CoreNode::mousePressEvent(QMouseEvent* pEvent)
 {
-    setFocus(true);
+    forceActiveFocus();
     mLastMousePosition = pEvent->pos();
     if (isMouseOnHeader(pEvent->pos()))
     {
@@ -210,13 +162,21 @@ void CoreNode::focusOutEvent(QFocusEvent* pEvent)
 
 void CoreNode::keyPressEvent(QKeyEvent* pEvent)
 {
-    if (mpCurrentNumberBox != nullptr)
+    if (mIsEditable && (mpCurrentNumberBox != nullptr))
     {
         mpCurrentNumberBox->keyPress(pEvent);
         update();
     }
-    if (pEvent->key() == Qt::Key::Key_Delete)
+    if (mIsDestructible && (pEvent->key() == Qt::Key::Key_Delete))
     {
+        for (int i{}; i < mOutputPorts.length(); i++)
+        {
+            Port* pPort = mOutputPorts[i].mInput;
+            if (pPort != nullptr)
+            {
+                pPort->mTarget = nullptr;
+            }
+        }
         deleteLater();
         dynamic_cast<Board*>(parent())->update();
     }
@@ -261,7 +221,7 @@ void CoreNode::portClickHelper(const QPoint& point)
 void CoreNode::numberBoxClickHelper(const QPoint& point)
 {
     NumberBox* pNumberBox = getClickedNumberBox(point);
-    if (pNumberBox != nullptr)
+    if (mIsEditable && (pNumberBox != nullptr))
     {
         mpCurrentNumberBox = pNumberBox;
     }
@@ -277,7 +237,7 @@ NumberBox* CoreNode::getClickedNumberBox(const QPoint& point)
 {
     NumberBox* pPort{};
 
-    for (int i = 0; i < mNumberBoxes.length(); i++)
+    for (int i{}; i < mNumberBoxes.length(); i++)
     {
         if (abs(point.x() - mNumberBoxes[i].mPosition.x()) <= mNumberBoxes[i].mWidth)
         {
@@ -294,7 +254,7 @@ Port* CoreNode::getClickedPort(const QPoint& point)
 {
     Port* pPort{};
 
-    for (int i = 0; i < mOutputPorts.length(); i++)
+    for (int i{}; i < mOutputPorts.length(); i++)
     {
         if (abs(point.x() - mOutputPorts[i].mPosition.x()) <= mOutputPorts[i].mRadius)
         {
@@ -304,7 +264,7 @@ Port* CoreNode::getClickedPort(const QPoint& point)
             }
         }
     }
-    for (int i = 0; i < mInputPorts.length(); i++)
+    for (int i{}; i < mInputPorts.length(); i++)
     {
         if (abs(point.x() - mInputPorts[i].mPosition.x()) <= mInputPorts[i].mRadius)
         {
@@ -376,21 +336,13 @@ void CoreNode::connectionRemover()
     {
         return;
     }
+
     if (mCurrentPort->mType == Port::PortType::INPUT)
     {
         mCurrentPort->mTarget = nullptr;
     }
-    else
+    else if (mCurrentPort->mInput != nullptr)
     {
-        if (mCurrentPort->mInput != nullptr)
-        {
-            mCurrentPort->mInput->mTarget = nullptr;
-        }
+        mCurrentPort->mInput->mTarget = nullptr;
     }
-}
-
-void CoreNode::bindPort(Port* pPort1, Port* pPort2)
-{
-    pPort2->mTarget = pPort1;
-    pPort1->mInput = pPort2;
 }

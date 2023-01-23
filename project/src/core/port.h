@@ -3,7 +3,7 @@
 #include <QList>
 #include <QQuickItem>
 
-#include "numberboxcore.hpp"
+#include "numberbox.hpp"
 
 struct Port
 {

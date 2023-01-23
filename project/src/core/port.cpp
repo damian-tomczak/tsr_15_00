@@ -10,7 +10,7 @@ Port* Port::getPortNearestAtPosition(QPoint point, QObject* pParent, QQuickItem*
 {
     Port* pPort{};
     QObjectList children = pParent->children();
-    for (int i = 0; i < children.length(); i++)
+    for (int i{}; i < children.length(); i++)
     {
         CoreNode* pNode = dynamic_cast<CoreNode*>(children[i]);
         if (pNode != dynamic_cast<CoreNode*>(pCurrentNode) && pNode != nullptr)

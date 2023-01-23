@@ -13,7 +13,7 @@
 #include "nodes/modulonode.hpp"
 #include "nodes/multiplynode.hpp"
 #include "nodes/subtractnode.hpp"
-#include "nodes/var1dnode.hpp"
+#include "nodes/varnode.hpp"
 
 namespace tsr
 {
@@ -27,7 +27,7 @@ App::App(int argc, char* argv[])
 
     qmlRegister();
 
-    mpEngine->load(QUrl(QStringLiteral("qrc:/main.qml")));
+    mpEngine->load(QUrl(QStringLiteral("qrc:/views/main.qml")));
     if (mpEngine->rootObjects().isEmpty())
     {
         throw std::runtime_error("failed to load qrc");
@@ -42,7 +42,7 @@ void App::qmlRegister()
 
     qmlRegisterType<PrintNode>("printnode", 1, 0, "PrintNode");
 
-    qmlRegisterType<Var1DNode>("var1dnode", 1, 0, "Var1DNode");
+    qmlRegisterType<VarNode>("varnode", 1, 0, "VarNode");
 
     qmlRegisterType<AddNode>("addnode", 1, 0, "AddNode");
     qmlRegisterType<SubtractNode>("subtractnode", 1, 0, "SubtractNode");
