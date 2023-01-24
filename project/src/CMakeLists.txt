@@ -10,10 +10,24 @@ file(GLOB_RECURSE SRC_FILES *.cpp)
 file(GLOB_RECURSE H_FILES *.h)
 file(GLOB_RECURSE HPP_FILES *.hpp)
 file(GLOB_RECURSE QML_FILES *.qml)
+set(OTHER_FILES
+    qml.qrc
+    views/Database.js
+    qtquickcontrols2.conf
+    ${CMAKE_SOURCE_DIR}/CMakeLists.txt
+)
+
 get_filename_component(MAIN_PATH_CPP ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp ABSOLUTE)
 list(REMOVE_ITEM SRC_FILES "${MAIN_PATH_CPP}")
-set(OTHER_FILES qml.qrc views/Database.js qtquickcontrols2.conf ${CMAKE_SOURCE_DIR}/CMakeLists.txt)
-add_library(${PROJECT_NAME} ${SRC_FILES} ${H_FILES} ${HPP_FILES} ${QML_FILES} ${OTHER_FILES})
+
+add_library(
+    ${PROJECT_NAME}
+    ${SRC_FILES}
+    ${H_FILES}
+    ${HPP_FILES}
+    ${QML_FILES}
+    ${OTHER_FILES}
+)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${QT_PATH}/include/QtGui
@@ -21,9 +35,16 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     .
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt::Core Qt::Quick Qt::Sql)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    Qt::Core
+    Qt::Quick
+    Qt::Sql
+)
 
-add_executable(${CMAKE_PROJECT_NAME} main.cpp qml.qrc)
+add_executable(${CMAKE_PROJECT_NAME}
+    main.cpp
+    qml.qrc
+)
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})
 
