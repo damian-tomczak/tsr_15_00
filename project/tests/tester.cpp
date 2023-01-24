@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
+#include <iostream>
+#include <QDebug>
 
-#include "core/resultparser.h"
+#include "core/resultparser.hpp"
 
 TEST(DummyTests, Dummytest)
 {
@@ -11,9 +13,41 @@ TEST(DummyTests, Dummytest)
 
 TEST(Basic, Adding)
 {
+    std::string_view firstResult{};
     ResultParser parser;
-    auto result = parser.orderResult("print(subtract(5,2))");
-    ASSERT_EQ("3", result);
+    auto output = parser.orderResult("print(add(2,2))").toStdString();
+    auto pos = output.find("\r\n");
+    if (pos != std::string::npos)
+    {
+        firstResult = { output.begin(), output.begin() + pos };
+    }
+    ASSERT_EQ("4", firstResult);
+}
+
+TEST(Basic, Subtracting)
+{
+    std::string_view firstResult{};
+    ResultParser parser;
+    auto output = parser.orderResult("print(subtract(5,2))").toStdString();
+    auto pos = output.find("\r\n");
+    if (pos != std::string::npos)
+    {
+        firstResult = { output.begin(), output.begin() + pos };
+    }
+    ASSERT_EQ("3", firstResult);
+}
+
+TEST(Basic, ModuloOperation)
+{
+    std::string_view firstResult{};
+    ResultParser parser;
+    auto output = parser.orderResult("print(modulo(1,5))").toStdString();
+    auto pos = output.find("\r\n");
+    if (pos != std::string::npos)
+    {
+        firstResult = { output.begin(), output.begin() + pos };
+    }
+    ASSERT_EQ("1", firstResult);
 }
 
 int main(int argc, char** argv)

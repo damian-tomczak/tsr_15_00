@@ -4,7 +4,7 @@
 
 #include "board.h"
 #include "nodes/corenode.h"
-#include "resultparser.h"
+#include "resultparser.hpp"
 
 class NodeValueFinder : public QObject
 {

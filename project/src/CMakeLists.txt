@@ -1,5 +1,11 @@
 project(${CMAKE_PROJECT_NAME}_lib)
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+find_package(Qt5 REQUIRED COMPONENTS Core Quick Sql)
+
 file(GLOB_RECURSE SRC_FILES *.cpp)
 file(GLOB_RECURSE H_FILES *.h)
 file(GLOB_RECURSE HPP_FILES *.hpp)
@@ -8,11 +14,13 @@ list(REMOVE_ITEM ${SRC_FILES} main.cpp)
 set(OTHER_FILES qml.qrc views/Database.js qtquickcontrols2.conf ${CMAKE_SOURCE_DIR}/CMakeLists.txt)
 add_library(${PROJECT_NAME} ${SRC_FILES} ${H_FILES} ${HPP_FILES} ${QML_FILES} ${OTHER_FILES})
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${QT_PATH}/include/QtGui)
-target_include_directories(${PROJECT_NAME} PRIVATE ${QT_PATH}/include/QtQuick)
-target_include_directories(${PROJECT_NAME} PRIVATE .)
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${QT_PATH}/include/QtGui
+    ${QT_PATH}/include/QtQuick
+    .
+)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Sql)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt::Core Qt::Quick Qt::Sql)
 
 add_executable(${CMAKE_PROJECT_NAME} main.cpp qml.qrc)
 
