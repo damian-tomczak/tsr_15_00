@@ -12,12 +12,9 @@ QString CoreNode::resultString()
     QString result = mFunctionName;
     for (int j{}; j < mOutputPorts.length(); j++)
     {
-        for (int k{}; k < mOutputPorts[j].mNumberBoxes.length(); k++)
+        if (mpNumberBox != nullptr)
         {
-            for (int l{}; l < mNumberBoxes.length(); l++)
-            {
-                result += mNumberBoxes[l].mText + "";
-            }
+            result += mpNumberBox->mText ;
         }
     }
 
@@ -61,7 +58,6 @@ void CoreNode::drawBody(QPainter* pPainter)
     g.setColorAt(1, mSecondColor);
     pPainter->fillRect(0, 0, w, mPanelHeight, QBrush(g));
 
-
     pPainter->setPen(mHighlightColor);
     pPainter->drawRect(1, 1, w - 2, h - 2);
     pPainter->drawRect(1, 1, w, mPanelHeight - 2);
@@ -102,11 +98,11 @@ void CoreNode::drawLabels(QPainter* pPainter)
     }
 }
 
-void CoreNode::drawNumberBoxes(QPainter* pPainter)
+void CoreNode::drawNumberBox(QPainter* pPainter)
 {
-    for (int i{}; i < mNumberBoxes.length(); i++)
+    if (mpNumberBox != nullptr)
     {
-        mNumberBoxes[i].drawBody(pPainter, mpCurrentNumberBox);
+        mpNumberBox->drawBody(pPainter);
     }
 }
 
@@ -116,7 +112,7 @@ void CoreNode::paint(QPainter* pPainter)
     drawTitle(pPainter);
     drawPorts(pPainter);
     drawLabels(pPainter);
-    drawNumberBoxes(pPainter);
+    drawNumberBox(pPainter);
 }
 
 void CoreNode::mouseMoveEvent(QMouseEvent* pEvent)
@@ -153,18 +149,18 @@ void CoreNode::mouseReleaseEvent(QMouseEvent* pEvent)
 
 void CoreNode::focusOutEvent(QFocusEvent* pEvent)
 {
-    if (pEvent->lostFocus())
+    if (pEvent->lostFocus() && (mpNumberBox != nullptr))
     {
-        mpCurrentNumberBox = nullptr;
+        mpNumberBox->mIsFocused = false;
         update();
     }
 }
 
 void CoreNode::keyPressEvent(QKeyEvent* pEvent)
 {
-    if (mIsEditable && (mpCurrentNumberBox != nullptr))
+    if (mIsEditable && (mpNumberBox != nullptr))
     {
-        mpCurrentNumberBox->keyPress(pEvent);
+        mpNumberBox->keyPress(pEvent);
         update();
     }
     if (mIsDestructible && (pEvent->key() == Qt::Key::Key_Delete))
@@ -220,34 +216,30 @@ void CoreNode::portClickHelper(const QPoint& point)
 
 void CoreNode::numberBoxClickHelper(const QPoint& point)
 {
-    NumberBox* pNumberBox = getClickedNumberBox(point);
-    if (mIsEditable && (pNumberBox != nullptr))
+    if ((mpNumberBox != nullptr))
     {
-        mpCurrentNumberBox = pNumberBox;
-    }
-    else
-    {
-        mpCurrentNumberBox = nullptr;
-
+        if (mIsEditable && isClickedNumberBox(point))
+        {
+            mpNumberBox->mIsFocused = true;
+        }
+        else
+        {
+            mpNumberBox->mIsFocused = false;
+        }
     }
     update();
 }
 
-NumberBox* CoreNode::getClickedNumberBox(const QPoint& point)
+bool CoreNode::isClickedNumberBox(const QPoint& point)
 {
-    NumberBox* pPort{};
-
-    for (int i{}; i < mNumberBoxes.length(); i++)
+    if (abs(point.x() - mpNumberBox->mPosition.x()) <= mpNumberBox->mWidth)
     {
-        if (abs(point.x() - mNumberBoxes[i].mPosition.x()) <= mNumberBoxes[i].mWidth)
+        if (abs(point.y() - mpNumberBox->mPosition.y()) <= mpNumberBox->mHeight)
         {
-            if (abs(point.y() - mNumberBoxes[i].mPosition.y()) <= mNumberBoxes[i].mHeight)
-            {
-                pPort = &mNumberBoxes[i];
-            }
+            return true;
         }
     }
-    return pPort;
+    return false;
 }
 
 Port* CoreNode::getClickedPort(const QPoint& point)

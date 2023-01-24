@@ -8,8 +8,8 @@ class VarNode : public CoreNode
         Q_PROPERTY(QString value READ getValue WRITE setValue)
 
 public slots:
-    void setValue(const QString value) { mNumberBoxes[0].mText = value; }
-    QString getValue() const { return mNumberBoxes[0].mText; }
+    void setValue(const QString value) { mpNumberBox->mText = value; }
+    QString getValue() const { return mpNumberBox->mText; }
 
 public:
     VarNode() : CoreNode("")
@@ -20,6 +20,10 @@ public:
         setFirstColor(QColor(Qt::green));
         setSecondColor(QColor(10, 160, 45));
 
+        NumberBox numberBox{ .mPosition = QPoint(12, 62) };
+
+        mpNumberBox = new NumberBox{ std::move(numberBox)};
+
         Port port
         {
             .mParent = this,
@@ -28,17 +32,6 @@ public:
             .mPosition = QPoint(125, 75),
         };
 
-        NumberBox numberBox
-        {
-            .mPosition = QPoint(12, 62)
-        };
-
-        mNumberBoxes.push_back(std::move(numberBox));
-
-        port.mNumberBoxes.push_back(std::move(numberBox));
-
-        mOutputPorts.push_back(std::move(port));
+        mOutputPorts.push_back({ std::move(port) });
     }
-
-private:
 };

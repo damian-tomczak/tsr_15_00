@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
     try
     {
-        tsr::App app = tsr::App(argc, argv);
+        tsr::App app{ argc, argv };
         app.run();
     }
     catch(const std::exception& e)

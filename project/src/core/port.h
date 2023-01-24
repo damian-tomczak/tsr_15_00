@@ -21,8 +21,6 @@ struct Port
     QPoint mPosition;
     float mRadius{ 10.f };
 
-    QList<NumberBox> mNumberBoxes;
-
     QPoint getWorldPosition();
     Port* getPortNearestAtPosition(QPoint point, QObject* pParent, QQuickItem* pCurrentNode);
 

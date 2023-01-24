@@ -18,12 +18,13 @@ struct NumberBox
     QColor mForeGroundColor{ Qt::white };
     int mCursorPos{ 1 };
     int MaxCharacters{ 8 };
+    bool mIsFocused{};
 
-    void drawBody(QPainter* painter, NumberBox* currentNumberBox)
+    void drawBody(QPainter* painter)
     {
         painter->setPen(mBorderColor);
         painter->drawRect(mPosition.x(), mPosition.y(), mWidth, mHeight);
-        QColor bcol = currentNumberBox == nullptr ? mBackgroundColor : mHighlightColor;
+        QColor bcol = mIsFocused ? mHighlightColor : mBackgroundColor;
         painter->fillRect(mPosition.x(), mPosition.y(), mWidth, mHeight, bcol);
 
         QFontMetrics f(mFont);
@@ -33,7 +34,7 @@ struct NumberBox
         painter->setFont(mFont);
         QString text = mText;
 
-        if (currentNumberBox != nullptr)
+        if (mIsFocused)
         {
             text.insert(mCursorPos, '|');
         }
@@ -56,20 +57,6 @@ struct NumberBox
             {
                 mText.remove(mCursorPos - 1, 1);
                 mCursorPos--;
-            }
-        }
-        if (event->key() == Qt::Key::Key_Left)
-        {
-            if (mCursorPos > 0)
-            {
-                mCursorPos--;
-            }
-        }
-        if (event->key() == Qt::Key::Key_Right)
-        {
-            if (mCursorPos < mText.length())
-            {
-                mCursorPos++;
             }
         }
         if ((event->key() >= 48 && event->key() <= 57) || event->key() == 46)

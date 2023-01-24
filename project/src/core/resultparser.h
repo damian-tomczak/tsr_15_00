@@ -11,5 +11,5 @@ class ResultParser : public QObject
     Q_OBJECT
 
 public:
-    QString orderResult(QString result);
+    Q_INVOKABLE QString orderResult(QString result);
 };

@@ -18,8 +18,8 @@ public:
 
     QList<Port> mInputPorts;
     QList<Port> mOutputPorts;
-    QList<NumberBox> mNumberBoxes;
     QList<Label> mLabels;
+    NumberBox* mpNumberBox{};
     QString mFunctionName;
 
     QString resultString();
@@ -54,10 +54,7 @@ private:
     QColor mBackgroundColor{ 40, 40, 40 };
     int mPanelHeight{ 40 };
     QColor mHighlightColor{ Qt::yellow };
-
     Port* mCurrentPort{};
-    NumberBox* mpCurrentNumberBox{};
-
     QPoint mLastMousePosition;
     bool mIsMouseClickedOnHeader{};
     bool mIsOutPutPortClicked{};
@@ -69,13 +66,13 @@ private:
     void drawTitle(QPainter* pPainter);
     void drawPorts(QPainter* pPainter);
     void drawLabels(QPainter* pPainter);
-    void drawNumberBoxes(QPainter* pPainter);
+    void drawNumberBox(QPainter* pPainter);
 
     bool isMouseOnHeader(const QPoint& point);
     void portClickHelper(const QPoint& point);
     void numberBoxClickHelper(const QPoint& point);
 
-    NumberBox* getClickedNumberBox(const QPoint& point);
+    bool isClickedNumberBox(const QPoint& point);
     Port* getClickedPort(const QPoint& point);
     void portLineMoveHelper(const QPoint& point);
     void releasePortTargeter(const QPoint& point);
