@@ -34,4 +34,8 @@ public:
 
         mOutputPorts.push_back({ std::move(port) });
     }
+    ~VarNode()
+    {
+        delete mpNumberBox;
+    }
 };
