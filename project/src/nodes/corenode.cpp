@@ -14,7 +14,7 @@ QString CoreNode::resultString()
     {
         if (mpNumberBox != nullptr)
         {
-            result += mpNumberBox->mText ;
+            result += mpNumberBox->mText;
         }
     }
 
@@ -204,7 +204,6 @@ void CoreNode::portClickHelper(const QPoint& point)
         if (pPort->mType == Port::PortType::INPUT)
         {
             mIsInputPortClicked = true;
-
         }
         else
         {

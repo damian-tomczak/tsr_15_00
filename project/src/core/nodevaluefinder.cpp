@@ -3,7 +3,7 @@
 QString NodeValueFinder::getResult(Board* pBoard)
 {
     QList<CoreNode*> allNodes;
-    QList<CoreNode*> inputNodeOnly;
+    QList<CoreNode*> inputNodesOnly;
 
     QObjectList children = pBoard->children();
     for (int i{}; i < children.size(); i++)
@@ -15,15 +15,15 @@ QString NodeValueFinder::getResult(Board* pBoard)
 
             if (child->mOutputPorts.length() == 0)
             {
-                inputNodeOnly.append(child);
+                inputNodesOnly.append(child);
             }
         }
     }
 
     QString result;
-    for (int i{}; i < inputNodeOnly.size(); i++)
+    for (int i{}; i < inputNodesOnly.size(); i++)
     {
-        result += inputNodeOnly[i]->resultString() + "\r\n";
+        result += inputNodesOnly[i]->resultString() + "\r\n";
     }
 
     ResultParser parser;

@@ -38,7 +38,8 @@ signals:
 public slots:
 
 private:
-    QColor mBackgroundColor{ 50, 50, 50 };
+    QColor mBackgroundColorDark{ 50, 50, 50 };
+    QColor mBackgroundColorLight{ 255, 255, 255 };
     QColor mSmallLineColor{ 38, 38, 38 };
     QColor mLargeLineColor{ 28, 28, 28 };
 
