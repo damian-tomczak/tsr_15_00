@@ -17,7 +17,11 @@ void Board::drawGridLines(QPainter* painter)
     int w = static_cast<int>(this->width());
     int h = static_cast<int>(this->height());
 
-    painter->fillRect(0, 0, w, h, QBrush(mBackgroundColorLight));
+    painter->fillRect(0,
+        0,
+        w,
+        h,
+        mIsDarkTheme ? QBrush(mBackgroundColorDark) : QBrush(mBackgroundColorLight));
 
     int vertLines = w / mSquareDimension + 1;
     int horizLines = h / mSquareDimension + 1;

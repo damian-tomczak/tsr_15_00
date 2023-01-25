@@ -57,21 +57,30 @@ Page {
 
             standardButtons: StandardButton.Ok
         }
-
-        Button {
-            text: "RUN"
-            anchors.right: parent.right
-            anchors.rightMargin: 8
-            onClicked: {
-                var msg = calc.getResult(board)
-                if(msg.indexOf("ERR")>=0) {
-                    outputText.color="red"
-                    msg=msg.replace("ERR","")
+        RowLayout {
+             anchors.right: parent.right
+             anchors.rightMargin: 8
+             Button {
+                text: "CHANGE THEME"
+                onClicked: {
+                    board.darkTheme=!board.darkTheme
+                    console.log(123)
+                    board.update()
                 }
-                else {
-                    outputText.color="white"
+            }
+            Button {
+                text: "RUN"
+                onClicked: {
+                    var msg = calc.getResult(board)
+                    if(msg.indexOf("ERR")>=0) {
+                        outputText.color="red"
+                        msg=msg.replace("ERR","")
+                    }
+                    else {
+                        outputText.color="white"
+                    }
+                    outputText.text=msg
                 }
-                outputText.text=msg
             }
         }
     }
