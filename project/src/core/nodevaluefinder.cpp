@@ -3,32 +3,41 @@
 QString NodeValueFinder::getResult(Board* pBoard)
 {
     QList<CoreNode*> allNodes;
-    QList<CoreNode*> inputNodeOnly;
+    QList<CoreNode*> inputNodesOnly;
 
     QObjectList children = pBoard->children();
-    for (int i = 0; i < children.size(); i++)
+    for (int i{}; i < children.size(); i++)
     {
-        CoreNode* c = dynamic_cast<CoreNode*>(children[i]);
-        if (c != nullptr)
+        CoreNode* child = dynamic_cast<CoreNode*>(children[i]);
+        if (child != nullptr)
         {
-            allNodes.push_back(c);
+            allNodes.push_back(child);
 
-            if (c->mOutputPorts.length() == 0)
+            if (child->mOutputPorts.length() == 0)
             {
-                inputNodeOnly.append(c);
+                inputNodesOnly.append(child);
             }
         }
     }
 
-    QString res;
-
-    for (int i = 0; i < inputNodeOnly.size(); i++)
+    QString result;
+    for (int i{}; i < inputNodesOnly.size(); i++)
     {
-
-        res += inputNodeOnly[i]->resultString() + "\r\n";
+        result += inputNodesOnly[i]->resultString() + "\r\n";
     }
 
-    ResultParser p;
+    ResultParser parser;
+    auto outputRaw = parser.orderResult(result);
+    auto output = outputRaw.toStdString();
+    auto pos = output.find("\r\n");
+    if (pos != std::string::npos)
+    {
+        std::string_view firstResult{ output.begin(), output.begin() + pos };
+        if ((mAnswer != "NULL") && (firstResult == mAnswer.toStdString().c_str()))
+        {
+            emit correctAnswer();
+        }
 
-    return p.orderResult(res);
+    }
+    return outputRaw;
 }

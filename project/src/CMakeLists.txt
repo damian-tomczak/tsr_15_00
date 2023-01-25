@@ -4,28 +4,49 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(QT_PATH CACHE STRING "QT path e.g. F:/qt/5.15.2/msvc2019_64")
-if("${QT_PATH}" STREQUAL "")
-    message(FATAL_ERROR "You need to first define QT_PATH")
-endif()
-list(APPEND CMAKE_PREFIX_PATH ${QT_PATH})
-find_package(Qt5 REQUIRED COMPONENTS Core Quick)
+find_package(Qt5 REQUIRED COMPONENTS Core Quick Sql)
 
 file(GLOB_RECURSE SRC_FILES *.cpp)
 file(GLOB_RECURSE H_FILES *.h)
 file(GLOB_RECURSE HPP_FILES *.hpp)
-list(REMOVE_ITEM ${SRC_FILES} main.cpp)
-add_library(${PROJECT_NAME} ${SRC_FILES} ${H_FILES} ${HPP_FILES} main.qml qtquickcontrols2.conf)
+file(GLOB_RECURSE QML_FILES *.qml)
+set(OTHER_FILES
+    qml.qrc
+    views/Database.js
+    qtquickcontrols2.conf
+    ${CMAKE_SOURCE_DIR}/CMakeLists.txt
+)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${QT_PATH}/include/QtGui)
-target_include_directories(${PROJECT_NAME} PRIVATE ${QT_PATH}/include/QtQuick)
-target_include_directories(${PROJECT_NAME} PRIVATE .)
+get_filename_component(MAIN_PATH_CPP ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp ABSOLUTE)
+list(REMOVE_ITEM SRC_FILES "${MAIN_PATH_CPP}")
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+add_library(
+    ${PROJECT_NAME}
+    ${SRC_FILES}
+    ${H_FILES}
+    ${HPP_FILES}
+    ${QML_FILES}
+    ${OTHER_FILES}
+)
 
-add_executable(${CMAKE_PROJECT_NAME} main.cpp qml.qrc)
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${QT_PATH}/include/QtGui
+    ${QT_PATH}/include/QtQuick
+    .
+)
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    Qt::Core
+    Qt::Quick
+    Qt::Sql
+)
+
+add_executable(${CMAKE_PROJECT_NAME}
+    main.cpp
+    qml.qrc
+)
+
+set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ${PROJECT_NAME})
 

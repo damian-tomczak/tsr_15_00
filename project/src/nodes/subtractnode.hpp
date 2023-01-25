@@ -13,24 +13,24 @@ public:
         setFirstColor(QColor(7, 138, 123));
         setSecondColor(QColor(45, 53, 187));
 
-        Port p1
+        Port port1
         {
             .mParent = this,
             .mColor = firstColor(),
             .mPosition = QPoint(20, 80),
         };
 
-        Port p2
+        Port port2
         {
             .mParent = this,
             .mColor = firstColor(),
             .mPosition = QPoint(20, 130),
         };
 
-        mInputPorts.push_back(std::move(p1));
-        mInputPorts.push_back(std::move(p2));
+        mInputPorts.push_back(std::move(port1));
+        mInputPorts.push_back(std::move(port2));
 
-        Port p3
+        Port port3
         {
             .mParent = this,
             .mType = Port::PortType::OUTPUT,
@@ -38,21 +38,21 @@ public:
             .mPosition = QPoint(125, 105),
         };
 
-        mOutputPorts.push_back(std::move(p3));
+        mOutputPorts.push_back(std::move(port3));
 
-        Label l1
+        Label label1
         {
             .mText = "A",
             .mPos = QPoint(40, 90),
         };
 
-        Label l2
+        Label label2
         {
             .mText = "B",
             .mPos = QPoint(40, 140),
         };
 
-        mLabels.push_back(std::move(l1));
-        mLabels.push_back(std::move(l2));
+        mLabels.push_back(std::move(label1));
+        mLabels.push_back(std::move(label2));
     }
 };

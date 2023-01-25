@@ -3,7 +3,7 @@
 #include <QList>
 #include <QQuickItem>
 
-#include "numberboxcore.hpp"
+#include "numberbox.hpp"
 
 struct Port
 {
@@ -20,8 +20,6 @@ struct Port
     QColor mColor{ Qt::green };
     QPoint mPosition;
     float mRadius{ 10.f };
-
-    QList<NumberBox> mNumberBoxes;
 
     QPoint getWorldPosition();
     Port* getPortNearestAtPosition(QPoint point, QObject* pParent, QQuickItem* pCurrentNode);

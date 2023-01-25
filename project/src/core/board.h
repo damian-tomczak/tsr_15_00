@@ -12,8 +12,8 @@
 class Board : public QQuickPaintedItem
 {
     Q_OBJECT
-
-        Q_PROPERTY(bool rightClicked READ rightClicked NOTIFY onRightMouseClickChanged)
+        Q_PROPERTY(bool rightClicked READ getRightClicked NOTIFY onRightMouseClickChanged)
+        Q_PROPERTY(bool darkTheme READ getDarkTheme WRITE setDarkTheme)
 
 public:
     Board() { setAcceptedMouseButtons(Qt::AllButtons); };
@@ -24,7 +24,9 @@ public:
     QPoint mFromCurrentLine;
     QPoint mToCurrentLine;
 
-    bool rightClicked() const { return mIsRighClicked; };
+    bool getRightClicked() const { return mIsRighClicked; };
+    bool getDarkTheme() const { return mIsDarkTheme; }
+    void setDarkTheme(bool condition) { mIsDarkTheme = condition;  }
 
 protected:
     void paint(QPainter* painter) override;
@@ -35,10 +37,9 @@ protected:
 signals:
     void onRightMouseClickChanged(const bool&);
 
-public slots:
-
 private:
-    QColor mBackgroundColor{ 50, 50, 50 };
+    QColor mBackgroundColorDark{ 50, 50, 50 };
+    QColor mBackgroundColorLight{ 255, 255, 255 };
     QColor mSmallLineColor{ 38, 38, 38 };
     QColor mLargeLineColor{ 28, 28, 28 };
 
@@ -49,6 +50,7 @@ private:
     int mSquareNumber{ 5 };
     bool mIsRighClicked{};
     float mCurZoom{ 1 };
+    bool mIsDarkTheme{ true };
 
     void drawGridLines(QPainter* painter);
     void zoomAmountModifier(int amt);

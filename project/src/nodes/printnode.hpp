@@ -13,13 +13,13 @@ public:
         setFirstColor(QColor(165, 42, 42));
         setSecondColor(QColor(Qt::yellow));
 
-        Port p
+        Port port
         {
             .mParent = this,
             .mColor = secondColor(),
             .mPosition = QPoint(20, 70),
         };
-        mInputPorts.push_back(std::move(p));
+        mInputPorts.push_back(std::move(port));
     }
 
 };

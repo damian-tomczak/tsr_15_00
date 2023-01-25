@@ -1,5 +1,13 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>views/Adding.qml</file>
+        <file>views/Database.js</file>
+        <file>views/main.qml</file>
+        <file>views/Modulo.qml</file>
+        <file>views/Sandbox.qml</file>
+        <file>views/Subtracting.qml</file>
+        <file>views/Tasks.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>images/wmii.jpg</file>
     </qresource>
 </RCC>
