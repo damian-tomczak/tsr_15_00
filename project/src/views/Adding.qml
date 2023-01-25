@@ -58,20 +58,29 @@ Page {
             standardButtons: StandardButton.Ok
         }
 
-        Button {
-            text: "RUN"
-            anchors.right: parent.right
-            anchors.rightMargin: 8
-            onClicked: {
-                var msg = calc.getResult(board)
-                if (msg.indexOf("ERR") >= 0) {
-                    outputText.color="red"
-                    msg=msg.replace("ERR","")
+        RowLayout {
+             anchors.right: parent.right
+             anchors.rightMargin: 8
+             Button {
+                text: "CHANGE THEME"
+                onClicked: {
+                    board.darkTheme=!board.darkTheme
+                    board.update()
                 }
-                else {
-                    outputText.color="white"
+            }
+            Button {
+                text: "RUN"
+                onClicked: {
+                    var msg = calc.getResult(board)
+                    if(msg.indexOf("ERR")>=0) {
+                        outputText.color="red"
+                        msg=msg.replace("ERR","")
+                    }
+                    else {
+                        outputText.color="white"
+                    }
+                    outputText.text=msg
                 }
-                outputText.text=msg
             }
         }
     }
@@ -111,23 +120,16 @@ Page {
                 font.bold: true
             }
         }
-
-        TextEdit {
+        ScrollView {
+        anchors.fill: parent
+        TextArea {
             id: outputText
             y: 34
-            height: 93
             color: "#fdfdfd"
             text: "Here you will see the result of work"
-            font.italic: false
-            font.bold: false
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0
-            anchors.left: parent.left
-            anchors.leftMargin: 0
-            anchors.right: parent.right
-            anchors.rightMargin: 0
             font.pixelSize: 18
-        }
+            readOnly: true
+        }}
     }
 
     Rectangle {

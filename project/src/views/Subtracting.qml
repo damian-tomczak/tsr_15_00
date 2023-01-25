@@ -64,7 +64,6 @@ Page {
                 text: "CHANGE THEME"
                 onClicked: {
                     board.darkTheme=!board.darkTheme
-                    console.log(123)
                     board.update()
                 }
             }
